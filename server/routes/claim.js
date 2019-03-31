@@ -8,14 +8,14 @@ module.exports = {
   options: {
     validate: { payload: schema,
       failAction: async (request, h, error) => {
-        console.log(`rejected payload ${payload}`)
+        console.log(`rejected payload ${request.payload}`)
         return h.response().code(400)
       }
     },
     handler: async (request, h) => {
       console.log('new claim received')
 
-      let userSuccess = await userService.register({email:request.payload.email})
+      let userSuccess = await userService.register({ email: request.payload.email })
       let claimSuccess = await claimService.submit({
         claimId: request.payload.claimId,
         properyType: request.payload.properyType,
@@ -24,8 +24,8 @@ module.exports = {
         mineType: request.payload.mineType
       })
 
-      if(!userService || ! claimSuccess){
-        return h.response().code(503)  
+      if (!userSuccess || !claimSuccess) {
+        return h.response().code(503)
       }
       return h.response().code(200)
     }
