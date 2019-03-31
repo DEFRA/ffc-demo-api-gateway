@@ -1,6 +1,5 @@
 const config = require('../config')
 const restClient = require('./rest-client')
-const _ = require('lodash')
 
 module.exports = {
   register: async (user) => {
