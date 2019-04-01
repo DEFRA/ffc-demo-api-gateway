@@ -8,6 +8,7 @@ module.exports = {
   options: {
     validate: { payload: schema,
       failAction: async (request, h, error) => {
+        console.log(request.payload)
         console.log(`rejected payload ${request.payload}`)
         return h.response().code(400)
       }
@@ -18,7 +19,7 @@ module.exports = {
       let userSuccess = await userService.register({ email: request.payload.email })
       let claimSuccess = await claimService.submit({
         claimId: request.payload.claimId,
-        properyType: request.payload.properyType,
+        propertyType: request.payload.propertyType,
         accessible: request.payload.accessible,
         dateOfSubsidence: request.payload.dateOfSubsidence,
         mineType: request.payload.mineType
