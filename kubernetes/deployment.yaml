@@ -1,0 +1,25 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app.component: api
+  name: api
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app.component: api
+    spec:
+      containers:   
+      - name: mine-support-api-gateway
+        image: mine-support-api-gateway
+        imagePullPolicy: Never
+        env:                
+        - name: NODE_ENV
+          value: production
+        ports:
+        - containerPort: 3001               
+      restartPolicy: Always
+status: {}
