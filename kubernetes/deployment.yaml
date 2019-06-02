@@ -2,15 +2,15 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app.component: api-gateway
-  name: api-gateway
+    app.component: mine-support-api-gateway
+  name: mine-support-api-gateway
 spec:
   ports:
   - name: http
     port: 3001
     targetPort: 3001
   selector:
-    app.component: api-gateway
+    app.component: mine-support-api-gateway
 status:
   loadBalancer: {}
 ---
@@ -18,15 +18,15 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   labels:
-    app.component: api-gateway
-  name: api-gateway
+    app.component: mine-support-api-gateway
+  name: mine-support-api-gateway
 spec:
   replicas: 1
   strategy: {}
   template:
     metadata:
       labels:
-        app.component: api-gateway
+        app.component: mine-support-api-gateway
     spec:
       containers:   
       - name: mine-support-api-gateway
