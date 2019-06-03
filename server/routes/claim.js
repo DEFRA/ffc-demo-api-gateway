@@ -15,6 +15,7 @@ module.exports = {
     },
     handler: async (request, h) => {
       console.log('new claim received')
+      console.log(request.payload)
 
       const userSuccess = await userService.register({ email: request.payload.email })
       const claimSuccess = await claimService.submit({

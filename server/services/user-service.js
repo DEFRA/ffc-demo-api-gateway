@@ -7,6 +7,7 @@ module.exports = {
       await restClient.postJson(`${config.userService}/register`, { payload: user })
       return true
     } catch (err) {
+      console.log(err)
       return false
     }
   }

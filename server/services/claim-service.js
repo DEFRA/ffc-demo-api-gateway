@@ -7,6 +7,7 @@ module.exports = {
       await restClient.postJson(`${config.claimService}/submit`, { payload: claim })
       return true
     } catch (err) {
+      console.log(err)
       return false
     }
   }
