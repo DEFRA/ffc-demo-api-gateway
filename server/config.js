@@ -4,8 +4,8 @@ const joi = require('joi')
 const schema = {
   port: joi.number().default(3001),
   env: joi.string().valid('development', 'test', 'production').default('development'),
-  userService: joi.string().uri().default('http://mine-support-user-service:3002'),
-  claimService: joi.string().uri().default('http://mine-support-claim-service:3003'),
+  userService: joi.string().uri().default('http://localhost:3002'),
+  claimService: joi.string().uri().default('http://localhost:3003'),
   restClientTimeoutMillis: joi.number().default(5000)
 }
 

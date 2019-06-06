@@ -35,6 +35,10 @@ spec:
         env:                
         - name: NODE_ENV
           value: production
+        - name: MINE_SUPPORT_USER_SERVICE
+          value: http://mine-support-user-service:3002
+        - name: MINE_SUPPORT_CLAIM_SERVICE
+          value: http://mine-support-claim-service:3003
         ports:
         - containerPort: 3001               
       restartPolicy: Always
