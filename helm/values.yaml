@@ -1,0 +1,24 @@
+environment: development
+containers:
+  service:
+    name: mine-support-api-gateway
+    port: 3001
+    registry:
+    image: mine-support-api-gateway
+    tag: latest
+    imagePullPolicy: IfNotPresent
+    requestMemory: 30Mi
+    requestCpu: 10m
+    limitMemory: 60Mi
+    limitCpu: 40m
+    runAsNonRoot: true
+    runAsUser: 1000
+    readOnlyRootFilesystem: true
+    allowPrivilegeEscalation: false
+    userServiceUrl: http://mine-support-user-service
+    userServicePort: 3002
+    claimServiceUrl: http://mine-support-claim-service
+    claimServicePort: 3003
+    restartPolicy: Always      
+replicas: 2
+minReadySeconds: 5

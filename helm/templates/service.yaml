@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.component: {{ .Values.containers.service.name }}
+  name: {{ .Values.containers.service.name }}
+spec:
+  ports:
+  - name: http
+    port: {{ .Values.containers.service.port }}
+    targetPort: {{ .Values.containers.service.port }}
+  selector:
+    app.component: {{ .Values.containers.service.name }}
+status:
+  loadBalancer: {}
