@@ -1,4 +1,5 @@
 environment: development
+restClientTimeout: 10
 containers:
   service:
     name: mine-support-api-gateway
