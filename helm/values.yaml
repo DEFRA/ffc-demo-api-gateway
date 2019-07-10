@@ -20,6 +20,6 @@ containers:
     userServicePort: 3002
     claimServiceUrl: http://mine-support-claim-service
     claimServicePort: 3003
-    restartPolicy: Always      
+    restartPolicy: Always
 replicas: 1
 minReadySeconds: 5

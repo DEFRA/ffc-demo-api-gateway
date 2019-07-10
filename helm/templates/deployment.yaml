@@ -21,7 +21,7 @@ spec:
         - name: NODE_ENV
           value: {{ .Values.environment }}
         - name: MINE_SUPPORT_REST_CLIENT_TIMEOUT_IN_MILLIS
-          value: {{ .Values.restClientTimeout }}
+          value: {{ .Values.restClientTimeout | quote }}
         - name: MINE_SUPPORT_USER_SERVICE
           value: {{ .Values.containers.service.userServiceUrl }}:{{ .Values.containers.service.userServicePort }}
         - name: MINE_SUPPORT_CLAIM_SERVICE
