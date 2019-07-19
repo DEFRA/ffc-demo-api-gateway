@@ -4,5 +4,14 @@ services:
     build: .
     image: mine-support-api-gateway
     container_name: mine-support-api-gateway
+    command: npm run start-watch
+    environment:
+      NODE_ENV: development
     ports:
         - "3001:3001"
+    volumes:
+      - node_modules:/code/node_modules
+      - .:/code
+
+volumes:
+  node_modules:
