@@ -1,40 +1,58 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  labels:
-    app.component: {{ .Values.containers.service.name }}
-  name: {{ .Values.containers.service.name }}
+  name: {{ .Values.name }}
 spec:
-  replicas: {{ .Values.replicas }}
+  replicas: {{ .Values.replicaCount }}
   minReadySeconds: {{ .Values.minReadySeconds }}
-  strategy: {}
   template:
     metadata:
       labels:
-        app.component: {{ .Values.containers.service.name }}
+        app: {{ .Values.name }}
+        environment: {{ .Values.environment }}
+      annotations:
+        redeployOnChange: "{{ .Values.container.redeployOnChange }}"
     spec:
-      containers:   
-      - name: {{ .Values.containers.service.name }}
-        image: {{ if .Values.containers.service.registry }}{{ .Values.containers.service.registry }}/{{ end }}{{ .Values.containers.service.image }}:{{ .Values.containers.service.tag }}
-        imagePullPolicy: {{ .Values.containers.service.imagePullPolicy }}
-        env:                
-        - name: NODE_ENV
-          value: {{ .Values.environment }}
-        - name: MINE_SUPPORT_REST_CLIENT_TIMEOUT_IN_MILLIS
-          value: {{ .Values.restClientTimeoutMillis | quote }}
-        - name: MINE_SUPPORT_USER_SERVICE
-          value: {{ .Values.containers.service.userServiceUrl }}:{{ .Values.containers.service.userServicePort }}
-        - name: MINE_SUPPORT_CLAIM_SERVICE
-          value: {{ .Values.containers.service.claimServiceUrl }}:{{ .Values.containers.service.claimServicePort }}
-        ports:
-        - containerPort: {{ .Values.containers.service.port }}              
-        resources:
-          requests:
-            memory: {{ .Values.containers.service.requestMemory | quote }}
-            cpu: {{ .Values.containers.service.requestCpu | quote }}
-          limits:
-            memory: {{ .Values.containers.service.limitMemory | quote }}
-            cpu: {{ .Values.containers.service.limitCpu | quote }}   
-        volumes:       
-        restartPolicy: {{ .Values.containers.service.restartPolicy }}
-status: {}
+    
+      restartPolicy: {{ .Values.container.restartPolicy }}
+      containers:
+        - name: {{ .Values.name }}
+          image: {{ .Values.image }}
+        {{- if .Values.container.command }}
+        {{- with .Values.container.command }}
+          command:
+            {{- toYaml . | nindent 12 }}
+        {{- end }}
+        {{- with .Values.container.args }}
+          args:
+            {{- toYaml . | nindent 12 }}
+        {{- end }}
+        {{- end }}
+          imagePullPolicy: {{ .Values.container.imagePullPolicy }}
+          securityContext:
+            runAsUser: {{ .Values.container.runAsUser }}
+            runAsNonRoot: {{ .Values.container.runAsNonRoot }}
+            readOnlyRootFilesystem: {{ .Values.container.readOnlyRootFilesystem }}
+            allowPrivilegeEscalation: {{ .Values.container.allowPrivilegeEscalation }}
+          ports:
+            - name: http
+              containerPort: 3001
+              protocol: TCP
+          resources:
+            requests:
+                memory: {{ .Values.container.requestMemory | quote }}
+                cpu: {{ .Values.container.requestCpu | quote }}
+            limits:
+                memory: {{ .Values.container.limitMemory | quote }}
+                cpu: {{ .Values.container.limitCpu | quote }}
+          env:
+            - name: environment
+              value: {{ .Values.environment }}
+            - name: MINE_SUPPORT_REST_CLIENT_TIMEOUT_IN_MILLIS
+              value: {{ .Values.restClientTimeoutMillis | quote }}
+            - name: MINE_SUPPORT_USER_SERVICE
+              value: {{ .Values.container.userServiceUrl }}:{{ .Values.container.userServicePort }}
+            - name: MINE_SUPPORT_CLAIM_SERVICE
+              value: {{ .Values.container.claimServiceUrl }}:{{ .Values.container.claimServicePort }}
+            - name: PORT
+              value: "3001"

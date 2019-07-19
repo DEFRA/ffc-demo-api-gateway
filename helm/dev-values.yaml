@@ -1,0 +1,7 @@
+environment: development
+container:
+  readOnlyRootFilesystem: false
+  allowPrivilegeEscalation: true
+  command: ["npx"]
+  args: ["nodemon", "--inspect=0.0.0.0", "--ext", "js,njk", "--legacy-watch", "index.js"]
+replicaCount: 1
