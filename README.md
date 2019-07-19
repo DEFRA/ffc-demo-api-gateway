@@ -74,13 +74,16 @@ to a local port using the name returned from the previous command, i.e.
 
 A PR can also be tested by reconfiguring the mine-gateway service to use the URL of the PR rather than the current release in the development cluster. Create a `patch.yaml` file containing the desired URL:
 ```
+apiVersion: extensions/v1beta1
+kind: Deployment
 spec:
   template:
     spec:
       containers:
-        env:
+      - env:
         - name: MINE_SUPPORT_API_GATEWAY
-          value:  http://mine-support-api-gateway.mine-support-api-gateway-pr3
+          value: http://mine-support-api-gateway-service.mine-support-api-gateway-pr2
+        name: mine-support
 ```
 then apply the patch:
 
