@@ -4,10 +4,9 @@ trigger:
     - v*
   branches:
     include:
-    - develop
       master
 pr:
-- develop
+- master
 
 pool:
   vmImage: 'ubuntu-latest'
