@@ -59,8 +59,6 @@ The [azure-pipelines.yaml](azure-pipelines.yaml) performs the following tasks:
 
 Builds will be deployed into a namespace with the format `mine-support-{identifier}` where `{identifier}` is either the release version, the PR number, or the branch name.
 
-The builds will be available at the URL `http://mine-support-{identifier}.{ingress-server}`, where `{ingress-server}` is the ingress server defined the [`values.yaml`](./helm/values.yaml),  which is `defradev.com` by default.
-
 The mine-support-api-gateway is not exposed via an endpoint within Kubernetes.
 The deployment may be accessed by forwarding a port from a pod.
 First find the name of the pod by querying the namespace, i.e.

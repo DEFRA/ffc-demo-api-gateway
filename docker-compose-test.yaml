@@ -5,5 +5,5 @@ services:
     build:
       context: .
     volumes:
-      - ./test-output:/code/test-output
+      - ./test-output:/usr/src/app/test-output
     command: npm run test

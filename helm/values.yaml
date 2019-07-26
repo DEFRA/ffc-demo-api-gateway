@@ -16,10 +16,8 @@ container:
   runAsUser: 1000
   readOnlyRootFilesystem: true
   allowPrivilegeEscalation: false
-  userServiceUrl: http://mine-support-user-service.default
-  userServicePort: 3002
-  claimServiceUrl: http://mine-support-claim-service.default
-  claimServicePort: 3003
+  userServiceUrl: http://mine-support-user-service.default:3002
+  claimServiceUrl: http://mine-support-claim-service.default:3003
   restartPolicy: Always
 replicaCount: 1
 minReadySeconds: 5

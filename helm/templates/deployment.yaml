@@ -51,8 +51,8 @@ spec:
             - name: MINE_SUPPORT_REST_CLIENT_TIMEOUT_IN_MILLIS
               value: {{ .Values.restClientTimeoutMillis | quote }}
             - name: MINE_SUPPORT_USER_SERVICE
-              value: {{ .Values.container.userServiceUrl }}:{{ .Values.container.userServicePort }}
+              value: {{ .Values.container.userServiceUrl }}
             - name: MINE_SUPPORT_CLAIM_SERVICE
-              value: {{ .Values.container.claimServiceUrl }}:{{ .Values.container.claimServicePort }}
+              value: {{ .Values.container.claimServiceUrl }}
             - name: PORT
               value: "3001"
