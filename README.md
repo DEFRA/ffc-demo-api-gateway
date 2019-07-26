@@ -59,16 +59,45 @@ The [azure-pipelines.yaml](azure-pipelines.yaml) performs the following tasks:
 
 Builds will be deployed into a namespace with the format `mine-support-{identifier}` where `{identifier}` is either the release version, the PR number, or the branch name.
 
+A detailed description on the build pipeline and PR work flow is available in the [Defra Confluence page](https://eaflood.atlassian.net/wiki/spaces/FFCPD/pages/1281359920/Build+Pipeline+and+PR+Workflow)
+
+
+# Testing Locally
+
 The mine-support-api-gateway is not exposed via an endpoint within Kubernetes.
+
 The deployment may be accessed by forwarding a port from a pod.
 First find the name of the pod by querying the namespace, i.e.
 
-`k get pods --namespace mine-support-gateway-api-pr3`
+`kubectl get pods --namespace mine-support-api-gateway-pr2`
 
 This will list the full name of all the pods in the namespace. Forward the pods exposed port 3001
 to a local port using the name returned from the previous command, i.e.
 
-`kubectl port-forward --namespace mine-support-api-gateway  mine-support-api-gateway-8b666f545-g477t  3001:3001`
+`kubectl port-forward --namespace mine-support-api-gateway-pr2 mine-support-api-gateway-8b666f545-g477t  3001:3001`
+
+Once the port is forwarded a tool such as [Postman](https://www.getpostman.com/) can be used to access the API at http://localhost:3001/claim.
+Sample valid JSON that can be posted is:
+```
+{ 
+  "claimId": "MINE123",
+  "propertyType": "business",
+  "accessible": false,
+  "dateOfSubsidence": "2019-07-26T09:54:19.622Z",
+  "mineType": ["gold"],
+  "email": "test@email.com"
+}
+```
+ Alternatively curl can be used locally to send a request to the end point, i.e.
+
+```
+curl  -i --header "Content-Type: application/json" \
+  --request POST \
+  --data '{ "claimId": "MINE123", "propertyType": "business",  "accessible": false,   "dateOfSubsidence": "2019-07-26T09:54:19.622Z",  "mineType": ["gold"],  "email": "test@email.com" }' \
+  http://localhost:3001/claim
+```
+
+# Testing 'In Situ'
 
 A PR can also be tested by reconfiguring the mine-gateway service to use the URL of the PR rather than the current release in the development cluster. Create a `patch.yaml` file containing the desired URL:
 ```
@@ -80,11 +109,9 @@ spec:
       containers:
       - env:
         - name: MINE_SUPPORT_API_GATEWAY
-          value: http://mine-support-api-gateway-service.mine-support-api-gateway-pr2
+          value: http://mine-support-api-gateway.mine-support-api-gateway-pr2
         name: mine-support
 ```
 then apply the patch:
 
 `kubectl patch deployment --namespace mine-support mine-support --patch "$(cat patch.yaml)"`
-
-A detailed description on the build pipeline and PR work flow is available in the [Defra Confluence page](https://eaflood.atlassian.net/wiki/spaces/FFCPD/pages/1281359920/Build+Pipeline+and+PR+Workflow)
