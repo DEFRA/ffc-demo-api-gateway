@@ -1,5 +1,4 @@
 environment: production
-containers:
-  service:
-    registry: 'jwminesupport.azurecr.io'
-    imagePullPolicy: Always
+image: jwminesupport.azurecr.io/mine-support-api-gateway
+container:
+  imagePullPolicy: Always
