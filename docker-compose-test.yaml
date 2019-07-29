@@ -1,0 +1,9 @@
+version: '3.4'
+
+services:
+  test:
+    build:
+      context: .
+    volumes:
+      - ./test-output:/usr/src/app/test-output
+    command: npm run test

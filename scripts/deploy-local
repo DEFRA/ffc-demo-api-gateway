@@ -1,0 +1,2 @@
+#!/bin/sh
+helm upgrade mine-support-api-gateway --install --namespace mine-support-api-gateway --values ./helm/dev-values.yaml ./helm
