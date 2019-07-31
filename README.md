@@ -114,4 +114,8 @@ spec:
 ```
 then apply the patch:
 
-`kubectl patch deployment --namespace mine-support mine-support --patch "$(cat patch.yaml)"`
+`kubectl patch deployment --namespace default mine-support --patch "$(cat patch.yaml)"`
+
+Once tested the patch can be rolled back, i.e.
+
+`kubectl rollout undo --namespace default deployment/mine-support`
