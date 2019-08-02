@@ -6,12 +6,20 @@ services:
     container_name: mine-support-api-gateway
     command: npm run start-watch
     environment:
+      MINE_SUPPORT_CLAIM_SERVICE: http://mine-support-claim-service:3003
+      MINE_SUPPORT_USER_SERVICE: http://mine-support-user-service:3002
       NODE_ENV: development
+    networks:
+      - mine-support
     ports:
-        - "3001:3001"
+      - "3001:3001"
     volumes:
       - node_modules:/usr/src/app/node_modules
       - .:/usr/src/app
+
+networks:
+  mine-support:
+    external: true
 
 volumes:
   node_modules:
