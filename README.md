@@ -31,14 +31,14 @@ A utility script is provided to aid in deploying to a local cluster.
 First build the container so it is available in the local Docker registry
 
  `./scripts/build-image`
- 
+
  Then deploy to the current Helm context
 
  `./scripts/deploy-local`
 
 It is much quicker to use the provided [docker-compose.yaml](./docker-compose.yaml) file for development. At the moment the compose file only contains the mine-support api, not stubs or images for other required services.
 
-The docker-compose file can be launched via `./bin/start-compose`. This will start a nodemon session watching for changes in `.js` files.
+The docker-compose file can be launched via `./scripts/start`. This will start a nodemon session watching for changes in `.js` files.
 
 For the volume mounts to work correct via WSL the application needs to be run from `/c/...` rather than `/mnt/c/..`.
 
@@ -49,7 +49,7 @@ Unit tests are written in Lab and can be run with the following command:
 
 `npm run test`
 
-Alternatively the `docker-compose-test.yaml` used by the continuous integration build may be run via the script `./scripts/test-compose`.
+Alternatively the `docker-compose-test.yaml` used by the continuous integration build may be run via the script `./scripts/test`.
 
 # Build Pipeline
 
@@ -81,7 +81,7 @@ to a local port using the name returned from the previous command, i.e.
 Once the port is forwarded a tool such as [Postman](https://www.getpostman.com/) can be used to access the API at http://localhost:3001/claim.
 Sample valid JSON that can be posted is:
 ```
-{ 
+{
   "claimId": "MINE123",
   "propertyType": "business",
   "accessible": false,

@@ -1,4 +1,0 @@
-#!/bin/sh
-docker-compose down -v
-docker-compose build --no-cache mine-support-api-gateway
-docker-compose up --force-recreate mine-support-api-gateway
