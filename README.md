@@ -15,17 +15,9 @@ Digital service mock to claim public money in the event property subsides into m
 # Prerequisites
 Node v10+
 
-# Running the application
-The application is designed to run as a container via Docker Compose or Kubernetes (with Helm).
+# Running the application in containers
 
-A convenience script is provided to run via Docker Compose:
-
-`scripts/start`
-
-This will create the required `mine-support` network before starting the service so that it can communicate with other Mine Support services running alongside it through docker-compose. The script will then attach to the running service, tailing its logs and allowing the service to be brought down by pressing `Ctrl + C`.
-
-# Running the application in Containers
-The service has been developed with the intention of running in Kubernetes. A helm chart is included in the `.\helm` folder.
+The application is designed to run as a container via Docker Compose or Kubernetes (with Helm). A helm chart is included in the `.\helm` folder.
 A utility script is provided to aid in deploying to a local cluster.
 
 First build the container so it is available in the local Docker registry
@@ -38,7 +30,9 @@ First build the container so it is available in the local Docker registry
 
 It is much quicker to use the provided [docker-compose.yaml](./docker-compose.yaml) file for development. At the moment the compose file only contains the mine-support api, not stubs or images for other required services.
 
-The docker-compose file can be launched via `./bin/start-compose`. This will start a nodemon session watching for changes in `.js` files.
+The docker-compose file can be launched via `./bin/start`. This will start a nodemon session watching for changes in `.js` files, and attach to the running service. Logs will be tailed and the service may be brought down by pressing `Ctrl + C`.
+
+The start script will also create the required `mine-support` network so that it can communicate with other Mine Support services running alongside it through docker-compose.
 
 For the volume mounts to work correct via WSL the application needs to be run from `/c/...` rather than `/mnt/c/..`.
 
@@ -49,9 +43,9 @@ Unit tests are written in Lab and can be run with the following command:
 
 `npm run test`
 
-Alternatively the `docker-compose-test.yaml` used by the continuous integration build may be run via the script `./scripts/test-compose`.
+Alternatively the `docker-compose.test.yaml` used by the continuous integration build may be run via the script `./scripts/test`.
 
-# Build Pipeline
+# Build pipeline
 
 The [azure-pipelines.yaml](azure-pipelines.yaml) performs the following tasks:
 - Runs unit tests
@@ -64,7 +58,7 @@ Builds will be deployed into a namespace with the format `mine-support-api-gatew
 A detailed description on the build pipeline and PR work flow is available in the [Defra Confluence page](https://eaflood.atlassian.net/wiki/spaces/FFCPD/pages/1281359920/Build+Pipeline+and+PR+Workflow)
 
 
-# Testing Locally
+# Testing locally
 
 The mine-support-api-gateway is not exposed via an endpoint within Kubernetes.
 
@@ -94,9 +88,9 @@ Sample valid JSON that can be posted is:
 
 ```
 curl  -i --header "Content-Type: application/json" \
-  --request POST \
-  --data '{ "claimId": "MINE123", "propertyType": "business",  "accessible": false,   "dateOfSubsidence": "2019-07-26T09:54:19.622Z",  "mineType": ["gold"],  "email": "test@email.com" }' \
-  http://localhost:3001/claim
+--request POST \
+--data '{ "claimId": "MINE123", "propertyType": "business",  "accessible": false,   "dateOfSubsidence": "2019-07-26T09:54:19.622Z",  "mineType": ["gold"],  "email": "test@email.com" }' \
+http://localhost:3001/claim
 ```
 
 # Testing 'In Situ'

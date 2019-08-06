@@ -1,0 +1,17 @@
+version: '3.4'
+services:
+  mine-support-api-gateway:
+    command: npm run start-watch
+    networks:
+      - mine-support
+    ports:
+      - "3001:3001"
+    volumes:
+      - node_modules:/usr/src/app/node_modules
+      - .:/usr/src/app
+
+networks:
+  mine-support:
+    external: true
+volumes:
+  node_modules:
