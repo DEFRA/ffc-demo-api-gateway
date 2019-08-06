@@ -30,7 +30,7 @@ First build the container so it is available in the local Docker registry
 
 It is much quicker to use the provided [docker-compose.yaml](./docker-compose.yaml) file for development. At the moment the compose file only contains the mine-support api, not stubs or images for other required services.
 
-The docker-compose file can be launched via `./bin/start`. This willstart a nodemon session watching for changes in `.js` files, and attach to the running service. Logs will be tailed and the service may be brought down by pressing `Ctrl + C`.
+The docker-compose file can be launched via `./bin/start`. This will start a nodemon session watching for changes in `.js` files, and attach to the running service. Logs will be tailed and the service may be brought down by pressing `Ctrl + C`.
 
 The start script will also create the required `mine-support` network so that it can communicate with other Mine Support services running alongside it through docker-compose.
 
@@ -88,9 +88,9 @@ Sample valid JSON that can be posted is:
 
 ```
 curl  -i --header "Content-Type: application/json" \
-  --request POST \
-  --data '{ "claimId": "MINE123", "propertyType": "business",  "accessible": false,   "dateOfSubsidence": "2019-07-26T09:54:19.622Z",  "mineType": ["gold"],  "email": "test@email.com" }' \
-  http://localhost:3001/claim
+--request POST \
+--data '{ "claimId": "MINE123", "propertyType": "business",  "accessible": false,   "dateOfSubsidence": "2019-07-26T09:54:19.622Z",  "mineType": ["gold"],  "email": "test@email.com" }' \
+http://localhost:3001/claim
 ```
 
 # Testing 'In Situ'
