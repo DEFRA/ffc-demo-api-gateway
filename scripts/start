@@ -2,6 +2,6 @@
 
 docker network inspect mine-support &>/dev/null || docker network create mine-support
 
-docker-compose down -v
-docker-compose build --no-cache mine-support-api-gateway
-docker-compose up --force-recreate mine-support-api-gateway
+docker-compose -f docker-compose.yaml -f docker-compose.local.yaml down -v
+docker-compose -f docker-compose.yaml -f docker-compose.local.yaml build --no-cache mine-support-api-gateway
+docker-compose -f docker-compose.yaml -f docker-compose.local.yaml up --force-recreate mine-support-api-gateway

@@ -1,3 +1,0 @@
-#!/bin/sh
-docker-compose  -f docker-compose-test.yaml build --no-cache test
-docker-compose  -f docker-compose-test.yaml up --force-recreate test

@@ -1,9 +1,6 @@
 version: '3.4'
-
 services:
-  test:
-    build:
-      context: .
+  mine-support-api-gateway:
     volumes:
       - ./test-output:/usr/src/app/test-output
     command: npm run test
