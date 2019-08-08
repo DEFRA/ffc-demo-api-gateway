@@ -1,21 +1,25 @@
 [![Build Status](https://defradev.visualstudio.com/DEFRA_FutureFarming/_apis/build/status/DEFRA.mine-support-api-gateway?branchName=master)](https://defradev.visualstudio.com/DEFRA_FutureFarming/_build/latest?definitionId=583&branchName=master)
 
 # Mine Support API Gateway
+
 Digital service mock to claim public money in the event property subsides into mine shaft.  This service receives submitted applications from the web application and sends the user data to the user service and the claim data to the claim service via http.  A response is sent back to the web front end as confirmation.
 
 # Environment variables
-|Name|Description|Required|Default|Valid|Notes|
-|---|---|:---:|---|---|---|
-|NODE_ENV|Node environment|no|development|development,test,production||
-|PORT|Port number|no|3001|||
-|MINE_SUPPORT_USER_SERVICE|Url of service User service|no|http://localhost:3002|||
-|MINE_SUPPORT_CLAIM_SERVICE|Url of service Claim service|no|http://localhost:3003|||
-|MINE_SUPPORT_REST_CLIENT_TIMEOUT_IN_MILLIS|Rest client timout|no|5000|||
+
+| Name                       | Description                  | Required | Default               | Valid                       | Notes |
+|----------------------------|------------------------------|:--------:|-----------------------|-----------------------------|-------|
+| NODE_ENV                   | Node environment             | no       | development           | development,test,production |       |
+| PORT                       | Port number                  | no       | 3001                  |                             |       |
+| MINE_SUPPORT_USER_SERVICE  | Url of service User service  | no       | http://localhost:3002 |                             |       |
+| MINE_SUPPORT_CLAIM_SERVICE | Url of service Claim service | no       | http://localhost:3003 |                             |       |
+| MINE_SUPPORT_REST_CLIENT_TIMEOUT_IN_MILLIS | Rest client timout | no | 5000                  |                             |       |
 
 # Prerequisites
-Node v10+
+
+- Node v10+
 
 # Running the application
+
 The application is designed to run as a container via Docker Compose or Kubernetes (with Helm).
 
 A convenience script is provided to run via Docker Compose:
@@ -25,6 +29,7 @@ A convenience script is provided to run via Docker Compose:
 This will create the required `mine-support` network before starting the service so that it can communicate with other Mine Support services running alongside it through docker-compose. The script will then attach to the running service, tailing its logs and allowing the service to be brought down by pressing `Ctrl + C`.
 
 # Running the application in Containers
+
 The service has been developed with the intention of running in Kubernetes. A helm chart is included in the `.\helm` folder.
 A utility script is provided to aid in deploying to a local cluster.
 
@@ -45,6 +50,7 @@ For the volume mounts to work correct via WSL the application needs to be run fr
 You may need to create a directory at `/c` then mount it via `sudo mount --bind /mnt/c /c` to be able to change to `/c/..`
 
 # How to run tests
+
 Unit tests are written in Lab and can be run with the following command:
 
 `npm run test`
