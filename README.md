@@ -18,6 +18,22 @@ Digital service mock to claim public money in the event property subsides into m
 
 - Node v10+
 
+# How to run tests
+
+A convenience script is provided to run automated tests in a containerised environment:
+
+```
+scripts/test
+```
+
+This runs tests via a `docker-compose run` command. If tests complete successfully, all containers, networks and volumes are cleaned up before the script exits. If there is an error or any tests fail, the associated Docker resources will be left available for inspection.
+
+Alternatively, the same tests may be run locally via npm:
+
+```
+npm run test
+```
+
 # Running the application
 
 The application is designed to run as a container via Docker Compose or Kubernetes (with Helm).
@@ -48,6 +64,8 @@ scripts/start --detach
 ```
 
 This service depends on an external Docker network named `mine-support` to communicate with other Mine Support services running alongside it. The start script will automatically create the network if it doesn't exist and the stop script will remove the network if no other containers are using it.
+
+The external network is declared in a secondary Docker Compose configuration (referenced by the above scripts) so that this service can be run in isolation without creating an external Docker network.
 
 ## Using Kubernetes
 
@@ -98,20 +116,6 @@ curl  -i --header "Content-Type: application/json" \
   --request POST \
   --data '{ "claimId": "MINE123", "propertyType": "business",  "accessible": false,   "dateOfSubsidence": "2019-07-26T09:54:19.622Z",  "mineType": ["gold"],  "email": "test@email.com" }' \
   http://localhost:3001/claim
-```
-
-# How to run tests
-
-A convenience script is provided to run automated tests in a containerised environment:
-
-```
-scripts/test
-```
-
-Alternatively, the same tests may be run locally via npm:
-
-```
-npm run test
 ```
 
 # Build Pipeline

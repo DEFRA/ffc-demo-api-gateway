@@ -1,0 +1,9 @@
+version: '3'
+services:
+  mine-support-api-gateway:
+    networks:
+      - mine-support
+
+networks:
+  mine-support:
+    external: true
