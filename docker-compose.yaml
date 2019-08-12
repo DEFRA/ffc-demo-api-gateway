@@ -12,8 +12,8 @@ services:
     ports:
       - "3001:3001"
     volumes:
-      - node_modules:/usr/src/app/node_modules
-      - .:/usr/src/app
+      - node_modules:/home/node/node_modules
+      - .:/home/node
 
 volumes:
   node_modules:
