@@ -1,6 +1,6 @@
 FROM node:10.15.3-alpine
 
-# Create app directory
+USER node
 WORKDIR /home/node
 
 # Install app dependencies
@@ -15,7 +15,6 @@ RUN npm install
 # Bundle app source
 COPY --chown=node:node . .
 
-USER node
 ARG PORT=3001
 ENV PORT ${PORT}
 EXPOSE ${PORT} 9229 9230
