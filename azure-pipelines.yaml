@@ -57,27 +57,6 @@ steps:
     mkdir test-output
     chmod 777 test-output
   displayName: create test output directory
-- task: DockerCompose@0
-  inputs:
-    containerregistrytype: Azure Container Registry
-    azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
-    azureContainerRegistry: $(azureContainerRegistryFull)
-    dockerComposeFile: docker-compose-test.yaml
-    projectName: $(Build.Repository.Name)
-    qualifyImageNames: true
-    dockerComposeCommand: build --no-cache test
-  displayName: build tests image
-  # run tests
-- task: DockerCompose@0
-  inputs:
-    containerregistrytype: Azure Container Registry
-    azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
-    azureContainerRegistry: $(azureContainerRegistryFull)
-    dockerComposeFile: docker-compose-test.yaml
-    projectName: $(Build.Repository.Name)
-    qualifyImageNames: true
-    dockerComposeCommand: up --force-recreate test
-  displayName: run tests
   # build base image
 - task: DockerCompose@0
   inputs:
@@ -90,6 +69,17 @@ steps:
     qualifyImageNames: true
     additionalImageTags: $(containerTag)
   displayName: build base image
+  # run tests
+- task: DockerCompose@0
+  inputs:
+    containerregistrytype: Azure Container Registry
+    azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
+    azureContainerRegistry: $(azureContainerRegistryFull)
+    dockerComposeFile: docker-compose.yaml
+    projectName: $(Build.Repository.Name)
+    qualifyImageNames: true
+    dockerComposeCommand: run $(imageName) npm run test
+  displayName: run tests
   # push container to registry
 - task: DockerCompose@0
   inputs:
@@ -151,7 +141,7 @@ steps:
     scriptLocation: inlineScript
     inlineScript: |
       helm init -c
-      az configure --defaults acr=$(azureContainerRegistry) 
+      az configure --defaults acr=$(azureContainerRegistry)
       az acr helm repo add
       helm package ./helm --save
       packageFile=`ls elm-rbac-* |  xargs echo`
