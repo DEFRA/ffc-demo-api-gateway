@@ -69,6 +69,19 @@ steps:
     qualifyImageNames: true
     additionalImageTags: $(containerTag)
   displayName: build base image
+  # build test image
+- task: DockerCompose@0
+  inputs:
+    action: Build services
+    containerregistrytype: Azure Container Registry
+    azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
+    azureContainerRegistry: $(azureContainerRegistryFull)
+    dockerComposeFile: docker-compose.yaml
+    additionalDockerComposeFiles: docker-compose.test.yaml
+    projectName: $(Build.Repository.Name)
+    qualifyImageNames: true
+    additionalImageTags: $(containerTag)
+  displayName: build test image
   # run tests
 - task: DockerCompose@0
   inputs:
