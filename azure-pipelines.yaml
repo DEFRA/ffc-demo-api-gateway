@@ -79,7 +79,7 @@ steps:
     additionalDockerComposeFiles: docker-compose.test.yaml
     projectName: $(Build.Repository.Name)
     qualifyImageNames: true
-    dockerComposeCommand: run $(imageName) npm run test
+    dockerComposeCommand: run $(imageName)
   displayName: run tests
   # push container to registry
 - task: DockerCompose@0
