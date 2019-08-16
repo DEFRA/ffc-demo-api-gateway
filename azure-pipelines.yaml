@@ -57,18 +57,6 @@ steps:
     mkdir test-output
     chmod 777 test-output
   displayName: create test output directory
-  # build base image
-- task: DockerCompose@0
-  inputs:
-    action: Build services
-    containerregistrytype: Azure Container Registry
-    azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
-    azureContainerRegistry: $(azureContainerRegistryFull)
-    dockerComposeFile: docker-compose.yaml
-    projectName: $(Build.Repository.Name)
-    qualifyImageNames: true
-    additionalImageTags: $(containerTag)
-  displayName: build base image
   # build test image
 - task: DockerCompose@0
   inputs:
@@ -93,6 +81,18 @@ steps:
     qualifyImageNames: true
     dockerComposeCommand: run $(imageName)
   displayName: run tests
+  # build base image
+- task: DockerCompose@0
+  inputs:
+    action: Build services
+    containerregistrytype: Azure Container Registry
+    azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
+    azureContainerRegistry: $(azureContainerRegistryFull)
+    dockerComposeFile: docker-compose.yaml
+    projectName: $(Build.Repository.Name)
+    qualifyImageNames: true
+    additionalImageTags: $(containerTag)
+  displayName: build base image
   # push container to registry
 - task: DockerCompose@0
   inputs:
