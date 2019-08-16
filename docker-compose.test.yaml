@@ -7,4 +7,4 @@ services:
   mine-support-api-gateway:
     command: npm run test
     volumes:
-      - ./test-output:/home/node/test-output
+      - ./test-output:/usr/src/app/test-output
