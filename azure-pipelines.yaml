@@ -80,7 +80,6 @@ steps:
     additionalDockerComposeFiles: docker-compose.test.yaml
     projectName: $(Build.Repository.Name)
     qualifyImageNames: true
-    additionalImageTags: $(containerTag)
   displayName: build test image
   # run tests
 - task: DockerCompose@0
