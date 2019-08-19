@@ -1,64 +1,97 @@
 [![Build Status](https://defradev.visualstudio.com/DEFRA_FutureFarming/_apis/build/status/DEFRA.mine-support-api-gateway?branchName=master)](https://defradev.visualstudio.com/DEFRA_FutureFarming/_build/latest?definitionId=583&branchName=master)
 
 # Mine Support API Gateway
+
 Digital service mock to claim public money in the event property subsides into mine shaft.  This service receives submitted applications from the web application and sends the user data to the user service and the claim data to the claim service via http.  A response is sent back to the web front end as confirmation.
 
 # Environment variables
-|Name|Description|Required|Default|Valid|Notes|
-|---|---|:---:|---|---|---|
-|NODE_ENV|Node environment|no|development|development,test,production||
-|PORT|Port number|no|3001|||
-|MINE_SUPPORT_USER_SERVICE|Url of service User service|no|http://localhost:3002|||
-|MINE_SUPPORT_CLAIM_SERVICE|Url of service Claim service|no|http://localhost:3003|||
-|MINE_SUPPORT_REST_CLIENT_TIMEOUT_IN_MILLIS|Rest client timout|no|5000|||
+
+| Name                       | Description                  | Required | Default               | Valid                       | Notes |
+|----------------------------|------------------------------|:--------:|-----------------------|-----------------------------|-------|
+| NODE_ENV                   | Node environment             | no       | development           | development,test,production |       |
+| PORT                       | Port number                  | no       | 3001                  |                             |       |
+| MINE_SUPPORT_USER_SERVICE  | Url of service User service  | no       | http://localhost:3002 |                             |       |
+| MINE_SUPPORT_CLAIM_SERVICE | Url of service Claim service | no       | http://localhost:3003 |                             |       |
+| MINE_SUPPORT_REST_CLIENT_TIMEOUT_IN_MILLIS | Rest client timout | no | 5000                  |                             |       |
 
 # Prerequisites
-Node v10+
 
-# Running the application in containers
-
-The application is designed to run as a container via Docker Compose or Kubernetes (with Helm). A helm chart is included in the `.\helm` folder.
-A utility script is provided to aid in deploying to a local cluster.
-
-First build the container so it is available in the local Docker registry
-
- `./scripts/build-image`
- 
- Then deploy to the current Helm context
-
- `./scripts/deploy-local`
-
-It is much quicker to use the provided [docker-compose.yaml](./docker-compose.yaml) file for development. At the moment the compose file only contains the mine-support api, not stubs or images for other required services.
-
-The docker-compose file can be launched via `./bin/start`. This will start a nodemon session watching for changes in `.js` files, and attach to the running service. Logs will be tailed and the service may be brought down by pressing `Ctrl + C`.
-
-The start script will also create the required `mine-support` network so that it can communicate with other Mine Support services running alongside it through docker-compose.
-
-For the volume mounts to work correct via WSL the application needs to be run from `/c/...` rather than `/mnt/c/..`.
-
-You may need to create a directory at `/c` then mount it via `sudo mount --bind /mnt/c /c` to be able to change to `/c/..`
+- Node v10+
 
 # How to run tests
-Unit tests are written in Lab and can be run with the following command:
 
-`npm run test`
+A convenience script is provided to run automated tests in a containerised environment:
 
-Alternatively the `docker-compose.test.yaml` used by the continuous integration build may be run via the script `./scripts/test`.
+```
+scripts/test
+```
 
-# Build pipeline
+This runs tests via a `docker-compose run` command. If tests complete successfully, all containers, networks and volumes are cleaned up before the script exits. If there is an error or any tests fail, the associated Docker resources will be left available for inspection.
 
-The [azure-pipelines.yaml](azure-pipelines.yaml) performs the following tasks:
-- Runs unit tests
-- Publishes test result
-- Pushes containers to the registry tagged with the PR number or release version
-- Deletes PR deployments, containers, and namepace upon merge
+Alternatively, the same tests may be run locally via npm:
 
-Builds will be deployed into a namespace with the format `mine-support-api-gateway-{identifier}` where `{identifier}` is either the release version, the PR number, or the branch name.
+```
+npm run test
+```
 
-A detailed description on the build pipeline and PR work flow is available in the [Defra Confluence page](https://eaflood.atlassian.net/wiki/spaces/FFCPD/pages/1281359920/Build+Pipeline+and+PR+Workflow)
+# Running the application
 
+The application is designed to run as a container via Docker Compose or Kubernetes (with Helm).
 
-# Testing locally
+## Using Docker Compose
+
+A set of convenience scripts are provided for local development and running via Docker Compose.
+
+```
+# Build service containers
+scripts/build
+
+# Start the service and attach to running containers (press `ctrl + c` to quit)
+scripts/start
+
+# Stop the service and remove Docker volumes and networks created by the start script
+scripts/stop
+```
+
+Any arguments provided to the build and start scripts are passed to the Docker Compose `build` and `up` commands, respectively. For example:
+
+```
+# Build without using the Docker cache
+scripts/build --no-cache
+
+# Start the service without attaching to containers
+scripts/start --detach
+```
+
+This service depends on an external Docker network named `mine-support` to communicate with other Mine Support services running alongside it. The start script will automatically create the network if it doesn't exist and the stop script will remove the network if no other containers are using it.
+
+The external network is declared in a secondary Docker Compose configuration (referenced by the above scripts) so that this service can be run in isolation without creating an external Docker network by using standard Docker Compose commands:
+
+```
+# Build containers
+docker-compose build
+
+# Start the service is isolation
+docker-compose up
+```
+
+## Using Kubernetes
+
+The service has been developed with the intention of running on Kubernetes in production.  A helm chart is included in the `.\helm` folder.
+
+Running via Helm requires a local Postgres database to be installed and setup with the username and password defined in the [values.yaml](./helm/values.yaml). It is much simpler to develop using Docker Compose locally than to set up a local Kubernetes environment. See above for instructions.
+
+To test Helm deployments locally, a [deploy](./deploy) script is provided.
+
+```
+# Build service containers
+scripts/build
+
+# Deploy to the current Helm context
+scripts/deploy
+```
+
+### Accessing the pod
 
 The mine-support-api-gateway is not exposed via an endpoint within Kubernetes.
 
@@ -75,7 +108,7 @@ to a local port using the name returned from the previous command, i.e.
 Once the port is forwarded a tool such as [Postman](https://www.getpostman.com/) can be used to access the API at http://localhost:3001/claim.
 Sample valid JSON that can be posted is:
 ```
-{ 
+{
   "claimId": "MINE123",
   "propertyType": "business",
   "accessible": false,
@@ -88,12 +121,24 @@ Sample valid JSON that can be posted is:
 
 ```
 curl  -i --header "Content-Type: application/json" \
---request POST \
---data '{ "claimId": "MINE123", "propertyType": "business",  "accessible": false,   "dateOfSubsidence": "2019-07-26T09:54:19.622Z",  "mineType": ["gold"],  "email": "test@email.com" }' \
-http://localhost:3001/claim
+  --request POST \
+  --data '{ "claimId": "MINE123", "propertyType": "business",  "accessible": false,   "dateOfSubsidence": "2019-07-26T09:54:19.622Z",  "mineType": ["gold"],  "email": "test@email.com" }' \
+  http://localhost:3001/claim
 ```
 
-# Testing 'In Situ'
+# Build Pipeline
+
+The [azure-pipelines.yaml](azure-pipelines.yaml) performs the following tasks:
+- Runs unit tests
+- Publishes test result
+- Pushes containers to the registry tagged with the PR number or release version
+- Deletes PR deployments, containers, and namepace upon merge
+
+Builds will be deployed into a namespace with the format `mine-support-api-gateway-{identifier}` where `{identifier}` is either the release version, the PR number, or the branch name.
+
+A detailed description on the build pipeline and PR work flow is available in the [Defra Confluence page](https://eaflood.atlassian.net/wiki/spaces/FFCPD/pages/1281359920/Build+Pipeline+and+PR+Workflow)
+
+## Testing a pull request
 
 A PR can also be tested by reconfiguring the mine-gateway service to use the URL of the PR rather than the current release in the development cluster. Create a `patch.yaml` file containing the desired URL:
 ```
@@ -106,12 +151,12 @@ spec:
       - env:
         - name: MINE_SUPPORT_API_GATEWAY
           value: http://mine-support-api-gateway.mine-support-api-gateway-pr2
-        name: mine-support
+        name: mine-support-api-gateway
 ```
 then apply the patch:
 
-`kubectl patch deployment --namespace default mine-support --patch "$(cat patch.yaml)"`
+`kubectl patch deployment --namespace default mine-support-api-gateway --patch "$(cat patch.yaml)"`
 
 Once tested the patch can be rolled back, i.e.
 
-`kubectl rollout undo --namespace default deployment/mine-support`
+`kubectl rollout undo --namespace default deployment/mine-support-api-gateway`

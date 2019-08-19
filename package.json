@@ -4,12 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "start-watch": "nodemon --inspect=0.0.0.0 --ext js --legacy-watch index.js",
-    "lint": "standard",
-    "unit-test": "lab -c -r console -o stdout -r junit -o ./test-output/junit.xml",
-    "pretest": "npm run lint",
-    "test": "npm run unit-test"
+    "pretest": "npm run test:lint",
+    "start:watch": "nodemon --inspect=0.0.0.0 --ext js --legacy-watch index.js",
+    "test": "npm run test:unit",
+    "test:lint": "standard",
+    "test:unit": "lab -c -r console -o stdout -r junit -o ./test-output/junit.xml"
   },
   "author": "John Watson, Mark Harrop, Matthew Collins, David Bingham",
   "license": "ISC",
