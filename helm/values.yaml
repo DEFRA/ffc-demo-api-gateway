@@ -17,7 +17,7 @@ container:
   readOnlyRootFilesystem: true
   allowPrivilegeEscalation: false
   userServiceUrl: http://mine-support-user-service.default
-  claimServiceUrl: http://mine-support-claim-service.default:3003
+  claimServiceUrl: http://mine-support-claim-service.default
   restartPolicy: Always
 replicaCount: 1
 minReadySeconds: 5
