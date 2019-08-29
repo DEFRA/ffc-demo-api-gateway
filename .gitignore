@@ -57,3 +57,8 @@ typings/
 
 # next.js build output
 .next
+
+# Test output
+lcov.info
+TEST-*.xml
+test-output/
