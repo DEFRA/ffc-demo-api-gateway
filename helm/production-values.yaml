@@ -1,4 +1,4 @@
 environment: production
-image: jwminesupport.azurecr.io/mine-support-api-gateway
+image: jwminesupport.azurecr.io/mine-support-api-gateway:master
 container:
   imagePullPolicy: Always

@@ -2,6 +2,7 @@ environment: development
 name:  mine-support-api-gateway
 image:  mine-support-api-gateway
 restClientTimeoutMillis: 10000
+imagePullSecret:
 service:
   type: ClusterIP
   port: 80
