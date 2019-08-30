@@ -13,7 +13,7 @@ spec:
       annotations:
         redeployOnChange: "{{ .Values.container.redeployOnChange }}"
     spec:
-    
+
       restartPolicy: {{ .Values.container.restartPolicy }}
       containers:
         - name: {{ .Values.name }}
@@ -56,3 +56,17 @@ spec:
               value: {{ .Values.container.claimServiceUrl }}
             - name: PORT
               value: "3001"
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.livenessProbe.path }}
+              port: {{ .Values.livenessProbe.port }}
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+            failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.readinessProbe.path }}
+              port: {{ .Values.readinessProbe.port }}
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+            failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
