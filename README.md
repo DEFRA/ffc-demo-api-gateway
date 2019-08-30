@@ -126,6 +126,13 @@ curl  -i --header "Content-Type: application/json" \
   http://localhost:3001/claim
 ```
 
+### Probes
+
+The service has both an Http readiness probe and an Http liveness probe configured to receive at the below end points.
+
+Readiness: `/healthy`
+Liveness: `/healthz`
+
 # Build Pipeline
 
 The [azure-pipelines.yaml](azure-pipelines.yaml) performs the following tasks:
