@@ -88,7 +88,7 @@ scripts/stop
 
 ## Connect to sibling services
 
-To test this service in combination with other parts of the Mine Support application, it is necessary to connect each service to an external Docker network and shared dependencies, such as message queues. Start the shared dependencies from the [`mine-support-development`](https://github.com/DEFRA/mine-support-development) repository and then use the `connected-` [`scripts`](./scripts/) to start this service. Follow instructions in other repositories to connect each service to the shared dependencies and network.
+To test this service in combination with other parts of the FFC demo application, it is necessary to connect each service to an external Docker network and shared dependencies, such as message queues. Start the shared dependencies from the [`mine-support-development`](https://github.com/DEFRA/mine-support-development) repository and then use the `connected-` [`scripts`](./scripts/) to start this service. Follow instructions in other repositories to connect each service to the shared dependencies and network.
 
 ```
 # Start the service
@@ -171,7 +171,8 @@ A detailed description on the build pipeline and PR work flow is available in th
 
 ## Testing a pull request
 
-A PR can also be tested by reconfiguring the mine-gateway service to use the URL of the PR rather than the current release in the development cluster. Create a `patch.yaml` file containing the desired URL:
+A PR can also be tested by reconfiguring the api-gateway service to use the URL of the PR rather than the current release in the development cluster. Create a `patch.yaml` file containing the desired URL:
+
 ```
 apiVersion: extensions/v1beta1
 kind: Deployment
