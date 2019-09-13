@@ -1,6 +1,6 @@
 environment: development
-name:  mine-support-api-gateway
-image:  mine-support-api-gateway
+name:  ffc-demo-api-gateway
+image:  ffc-demo-api-gateway
 restClientTimeoutMillis: 10000
 imagePullSecret:
 service:
@@ -17,8 +17,8 @@ container:
   runAsUser: 1000
   readOnlyRootFilesystem: true
   allowPrivilegeEscalation: false
-  userServiceUrl: http://mine-support-user-service.default
-  claimServiceUrl: http://mine-support-claim-service.default
+  userServiceUrl: http://ffc-demo-user-service.default
+  claimServiceUrl: http://ffc-demo-claim-service.default
   restartPolicy: Always
 replicaCount: 1
 minReadySeconds: 5

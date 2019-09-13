@@ -1,6 +1,6 @@
 {
-  "name": "mine-support-api-gateway",
-  "description": "Digital service mock to claim public money in the event property subsides into mine shaft.",
+  "name": "ffc-demo-api-gateway",
+  "description": "Digital service demonstration application to claim public money in the event property subsides into mine shaft.",
   "version": "0.0.1",
   "repository": {
     "type": "git",
