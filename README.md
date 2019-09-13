@@ -4,7 +4,22 @@
 
 Digital service mock to claim public money in the event property subsides into mine shaft.  This service receives submitted applications from the web application and sends the user data to the user service and the claim data to the claim service via http.  A response is sent back to the web front end as confirmation.
 
+# Prerequisites
+
+Either:
+- Docker
+- Docker Compose
+
+Or:
+- Kubernetes
+- Helm
+
+Or:
+- Node 10
+
 # Environment variables
+
+The following environment variables are required by the application container. Values for development are set in the Docker Compose configuration. Default values for production-like deployments are set in the Helm chart and may be overridden by build and release pipelines.
 
 | Name                       | Description                  | Required | Default               | Valid                       | Notes |
 |----------------------------|------------------------------|:--------:|-----------------------|-----------------------------|-------|
@@ -13,10 +28,6 @@ Digital service mock to claim public money in the event property subsides into m
 | FFC_DEMO_USER_SERVICE  | Url of service User service  | no       | http://localhost:3002 |                             |       |
 | FFC_DEMO_CLAIM_SERVICE | Url of service Claim service | no       | http://localhost:3003 |                             |       |
 | FFC_DEMO_REST_CLIENT_TIMEOUT_IN_MILLIS | Rest client timout | no | 5000                  |                             |       |
-
-# Prerequisites
-
-- Node v10+
 
 # How to run tests
 
