@@ -13,9 +13,9 @@ const schema = {
 const config = {
   port: process.env.PORT,
   env: process.env.NODE_ENV,
-  userService: process.env.MINE_SUPPORT_USER_SERVICE,
-  claimService: process.env.MINE_SUPPORT_CLAIM_SERVICE,
-  restClientTimeoutMillis: process.env.MINE_SUPPORT_REST_CLIENT_TIMEOUT_IN_MILLIS
+  userService: process.env.FFC_DEMO_USER_SERVICE,
+  claimService: process.env.FFC_DEMO_CLAIM_SERVICE,
+  restClientTimeoutMillis: process.env.FFC_DEMO_REST_CLIENT_TIMEOUT_IN_MILLIS
 }
 
 // Validate config
