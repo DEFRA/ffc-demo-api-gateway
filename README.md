@@ -1,6 +1,6 @@
 [![Build Status](https://defradev.visualstudio.com/DEFRA_FutureFarming/_apis/build/status/DEFRA.mine-support-api-gateway?branchName=master)](https://defradev.visualstudio.com/DEFRA_FutureFarming/_build/latest?definitionId=583&branchName=master)
 
-# Mine Support API Gateway
+# FFC Demo API Gateway
 
 Digital service mock to claim public money in the event property subsides into mine shaft.  This service receives submitted applications from the web application and sends the user data to the user service and the claim data to the claim service via http.  A response is sent back to the web front end as confirmation.
 
@@ -10,9 +10,9 @@ Digital service mock to claim public money in the event property subsides into m
 |----------------------------|------------------------------|:--------:|-----------------------|-----------------------------|-------|
 | NODE_ENV                   | Node environment             | no       | development           | development,test,production |       |
 | PORT                       | Port number                  | no       | 3001                  |                             |       |
-| MINE_SUPPORT_USER_SERVICE  | Url of service User service  | no       | http://localhost:3002 |                             |       |
-| MINE_SUPPORT_CLAIM_SERVICE | Url of service Claim service | no       | http://localhost:3003 |                             |       |
-| MINE_SUPPORT_REST_CLIENT_TIMEOUT_IN_MILLIS | Rest client timout | no | 5000                  |                             |       |
+| FFC_DEMO_USER_SERVICE  | Url of service User service  | no       | http://localhost:3002 |                             |       |
+| FFC_DEMO_CLAIM_SERVICE | Url of service Claim service | no       | http://localhost:3003 |                             |       |
+| FFC_DEMO_REST_CLIENT_TIMEOUT_IN_MILLIS | Rest client timout | no | 5000                  |                             |       |
 
 # Prerequisites
 
@@ -63,7 +63,7 @@ scripts/build --no-cache
 scripts/start --detach
 ```
 
-This service depends on an external Docker network named `ffc-demo` to communicate with other Mine Support services running alongside it. The start script will automatically create the network if it doesn't exist and the stop script will remove the network if no other containers are using it.
+This service depends on an external Docker network named `ffc-demo` to communicate with other FFC demo services running alongside it. The start script will automatically create the network if it doesn't exist and the stop script will remove the network if no other containers are using it.
 
 The external network is declared in a secondary Docker Compose configuration (referenced by the above scripts) so that this service can be run in isolation without creating an external Docker network by using standard Docker Compose commands:
 
@@ -122,7 +122,7 @@ Sample valid JSON that can be posted is:
 ```
 curl  -i --header "Content-Type: application/json" \
   --request POST \
-  --data '{ "claimId": "MINE123", "propertyType": "business",  "accessible": false,   "dateOfSubsidence": "2019-07-26T09:54:19.622Z",  "mineType": ["gold"],  "email": "test@email.com" }' \
+  --data '{ "claimId": "MYNE301", "propertyType": "business",  "accessible": false,   "dateOfSubsidence": "2019-07-26T09:54:19.622Z",  "mineType": ["gold"],  "email": "test@email.com" }' \
   http://localhost:3001/claim
 ```
 
@@ -156,7 +156,7 @@ spec:
     spec:
       containers:
       - env:
-        - name: MINE_SUPPORT_API_GATEWAY
+        - name: FFC_DEMO_API_GATEWAY
           value: http://ffc-demo-api-gateway.ffc-demo-api-gateway-pr2
         name: ffc-demo-api-gateway
 ```
