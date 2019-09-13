@@ -1,11 +1,11 @@
 version: '3.4'
 services:
-  mine-support-api-gateway:
+  ffc-demo-api-gateway:
     build: .
-    image: mine-support-api-gateway
-    container_name: mine-support-api-gateway
+    image: ffc-demo-api-gateway
+    container_name: ffc-demo-api-gateway
     command: npm run start:watch
     environment:
-      MINE_SUPPORT_CLAIM_SERVICE: http://mine-support-claim-service:3003
-      MINE_SUPPORT_USER_SERVICE: http://mine-support-user-service:3002
+      FFC_DEMO_CLAIM_SERVICE: http://ffc-demo-claim-service:3003
+      FFC_DEMO_USER_SERVICE: http://ffc-demo-user-service:3002
       NODE_ENV: development

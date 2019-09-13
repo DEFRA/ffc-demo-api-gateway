@@ -1,4 +1,4 @@
 environment: production
-image: jwminesupport.azurecr.io/mine-support-api-gateway:master
+image: jwminesupport.azurecr.io/ffc-demo-api-gateway:master
 container:
   imagePullPolicy: Always
