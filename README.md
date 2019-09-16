@@ -1,4 +1,4 @@
-[![Build Status](https://defradev.visualstudio.com/DEFRA_FutureFarming/_apis/build/status/defra-ffc-demo-api-gateway?branchName=develop)](https://defradev.visualstudio.com/DEFRA_FutureFarming/_build/latest?definitionId=583&branchName=develop)
+[![Build Status](https://defradev.visualstudio.com/DEFRA_FutureFarming/_apis/build/status/defra-ffc-demo-web?branchName=develop)](https://defradev.visualstudio.com/DEFRA_FutureFarming/_build/latest?definitionId=579&branchName=master)
 
 # FFC Demo API Gateway
 
