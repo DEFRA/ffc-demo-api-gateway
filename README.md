@@ -22,13 +22,13 @@ Or:
 
 The following environment variables are required by the application container. Values for development are set in the Docker Compose configuration. Default values for production-like deployments are set in the Helm chart and may be overridden by build and release pipelines.
 
-| Name                       | Description                  | Required | Default               | Valid                       | Notes |
-|----------------------------|------------------------------|:--------:|-----------------------|-----------------------------|-------|
-| NODE_ENV                   | Node environment             | no       | development           | development,test,production |       |
-| PORT                       | Port number                  | no       | 3001                  |                             |       |
-| FFC_DEMO_USER_SERVICE  | Url of service User service  | no       | http://localhost:3002 |                             |       |
-| FFC_DEMO_CLAIM_SERVICE | Url of service Claim service | no       | http://localhost:3003 |                             |       |
-| FFC_DEMO_REST_CLIENT_TIMEOUT_IN_MILLIS | Rest client timout | no | 5000                  |                             |       |
+| Name                       | Description                    | Required | Default               | Valid                       | Notes |
+|----------------------------|--------------------------------|:--------:|-----------------------|-----------------------------|-------|
+| NODE_ENV                   | Node environment               | no       | development           | development,test,production |       |
+| PORT                       | Port number                    | no       | 3001                  |                             |       |
+| FFC_DEMO_USER_SERVICE      | Url of service User service    | no       | http://localhost:3002 |                             |       |
+| FFC_DEMO_CLAIM_SERVICE     | Url of service Claim service   | no       | http://localhost:3003 |                             |       |
+| FFC_DEMO_REST_CLIENT_TIMEOUT_IN_MILLIS | Rest client timout | no       | 5000                  |                             |       |
 
 # How to run tests
 
