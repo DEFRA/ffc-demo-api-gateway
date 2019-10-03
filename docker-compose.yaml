@@ -1,9 +1,9 @@
 version: '3.4'
 services:
-  ffc-demo-api-gateway-service:
+  ffc-demo-api-gateway:
     build: .
     image: ffc-demo-api-gateway
-    container_name: ffc-demo-api-gateway-service
+    container_name: ffc-demo-api-gateway
     command: npm run start:watch
     environment:
       FFC_DEMO_CLAIM_SERVICE: http://ffc-demo-claim-service:3003

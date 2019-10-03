@@ -4,7 +4,7 @@ set -e
 projectRoot="$(a="/$0"; a=${a%/*}; a=${a:-.}; a=${a#/}/; cd "$a/.." || return; pwd)"
 
 # Set expected prefix for Docker resource names managed by this script
-dockerPrefix="ffc-demo-api-gateway"
+containerName="ffc-demo-api-gateway"
 
 show_help() {
   echo "
@@ -72,7 +72,7 @@ compose() {
   fi
 
   # Run tests
-  compose run ${dockerPrefix}-service
+  compose run ${containerName}
 
   # Clean up
   compose down --volumes

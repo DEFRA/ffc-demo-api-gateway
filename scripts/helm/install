@@ -4,7 +4,8 @@ set -e
 projectRoot="$(a="/$0"; a=${a%/*}; a=${a:-.}; a=${a#/}/; cd "$a/../.." || return; pwd)"
 
 # Set expected prefix for Docker resource names managed by this script
-dockerPrefix="ffc-demo-api-gateway"
+containerName="ffc-demo-api-gateway"
+kubernetesNamespace="ffc-demo"
 
 (
   cd "${projectRoot}"
@@ -13,9 +14,9 @@ dockerPrefix="ffc-demo-api-gateway"
   helm upgrade \
     --atomic \
     --install \
-    --namespace ${dockerPrefix} \
+    --namespace ${kubernetesNamespace} \
     --values helm/development-values.yaml \
     --wait \
-    ${dockerPrefix}-service \
+    ${containerName} \
     ./helm
 )

@@ -4,7 +4,7 @@ version: '3.4'
 # connect this service to sibling services from other repositories
 
 services:
-  ffc-demo-api-gateway-service:
+  ffc-demo-api-gateway:
     networks:
       - ffc-demo
 
