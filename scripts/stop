@@ -3,7 +3,7 @@
 set -e
 projectRoot="$(a="/$0"; a=${a%/*}; a=${a:-.}; a=${a#/}/; cd "$a/.." || return; pwd)"
 
-# Set expected prefix for Docker resource names managed by this script
+# Set Docker/Kubernetes resource names managed by this script
 containerName="ffc-demo-api-gateway"
 
 show_help() {
