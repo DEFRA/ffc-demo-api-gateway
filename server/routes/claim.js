@@ -6,7 +6,8 @@ module.exports = {
   method: 'POST',
   path: '/claim',
   options: {
-    validate: { payload: schema,
+    validate: {
+      payload: schema,
       failAction: async (request, h, error) => {
         console.log('rejected payload', request.payload)
         return h.response().code(400).takeover()

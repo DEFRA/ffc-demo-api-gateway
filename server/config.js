@@ -1,13 +1,13 @@
-const joi = require('@hapi/joi')
+const Joi = require('@hapi/joi')
 
 // Define config schema
-const schema = {
-  port: joi.number().default(3001),
-  env: joi.string().valid('development', 'test', 'production').default('development'),
-  userService: joi.string().uri().default('http://localhost:3002'),
-  claimService: joi.string().uri().default('http://localhost:3003'),
-  restClientTimeoutMillis: joi.number().default(5000)
-}
+const schema = Joi.object({
+  port: Joi.number().default(3001),
+  env: Joi.string().valid('development', 'test', 'production').default('development'),
+  userService: Joi.string().uri().default('http://localhost:3002'),
+  claimService: Joi.string().uri().default('http://localhost:3003'),
+  restClientTimeoutMillis: Joi.number().default(5000)
+})
 
 // Build config
 const config = {
@@ -19,7 +19,7 @@ const config = {
 }
 
 // Validate config
-const result = joi.validate(config, schema, {
+const result = schema.validate(config, {
   abortEarly: false
 })
 
@@ -28,7 +28,7 @@ if (result.error) {
   throw new Error(`The server config is invalid. ${result.error.message}`)
 }
 
-// Use the joi validated value
+// Use the Joi validated value
 const value = result.value
 
 // Add some helper props
