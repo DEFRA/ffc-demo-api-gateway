@@ -4,7 +4,7 @@ set -e
 projectRoot="$(a="/$0"; a=${a%/*}; a=${a:-.}; a=${a#/}/; cd "$a/.." || return; pwd)"
 
 # Set Docker/Kubernetes resource names managed by this script
-containerName="ffc-demo-api-gateway"
+dockerPrefix="ffc-demo-api-gateway"
 
 show_help() {
   echo "
@@ -68,7 +68,7 @@ compose() {
   cd "${projectRoot}"
 
   existingContainers="$( docker-compose ps -q )"
-  existingVolumes="$( docker volume ls --filter name=^${containerName} --format={{.Name}} )"
+  existingVolumes="$( docker volume ls --filter name=^${dockerPrefix} --format={{.Name}} )"
 
   # Only bring down services if there are existing containers/volumes
   if [ -n "${existingContainers}${existingVolumes}" ]; then

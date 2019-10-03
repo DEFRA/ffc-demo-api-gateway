@@ -4,7 +4,7 @@ set -e
 projectRoot="$(a="/$0"; a=${a%/*}; a=${a:-.}; a=${a#/}/; cd "$a/.." || return; pwd)"
 
 # Set Docker/Kubernetes resource names managed by this script
-containerName="ffc-demo-api-gateway"
+dockerPrefix="ffc-demo-api-gateway"
 
 # show_help: function to show help text
 show_help() {
@@ -100,8 +100,8 @@ show_conflict_warning() {
   cd "${projectRoot}"
 
   # Warn about any conflicting containers/volumes, unless clean or quick flag received
-  existingContainers="$( docker ps --filter name=^${containerName} --format={{.Names}} )"
-  existingVolumes="$( docker volume ls --filter name=^${containerName} --format={{.Name}} )"
+  existingContainers="$( docker ps --filter name=^${dockerPrefix} --format={{.Names}} )"
+  existingVolumes="$( docker volume ls --filter name=^${dockerPrefix} --format={{.Name}} )"
   if [ -n "${existingContainers}${existingVolumes}" ] && [ "${quick}" != "true" ] && [ "${clean}" != "true" ]; then
     show_conflict_warning "${existingContainers}" "${existingVolumes}"
     exit 1

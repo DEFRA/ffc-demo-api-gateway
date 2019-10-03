@@ -10,12 +10,13 @@ projectRoot="$(a="/$0"; a=${a%/*}; a=${a:-.}; a=${a#/}/; cd "$a/.." || return; p
 
 # Set Docker/Kubernetes resource names managed by this script
 containerName="ffc-demo-api-gateway"
+dockerPrefix="ffc-demo-api-gateway"
 
 (
   cd "${projectRoot}"
 
-  existingService="$( docker ps -q --filter name=^${containerName}$ )"
-  existingVolumes="$( docker volume ls --filter name=^${containerName} --format={{.Name}} )"
+  existingService="$( docker ps -q --filter name=^${dockerPrefix}$ )"
+  existingVolumes="$( docker volume ls --filter name=^${dockerPrefix} --format={{.Name}} )"
 
   if [ -z "${existingService}" ]; then
     printf "\nCreating service to execute command in.\n"
