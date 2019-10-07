@@ -1,0 +1,22 @@
+#!/bin/sh
+
+set -e
+projectRoot="$(a="/$0"; a=${a%/*}; a=${a:-.}; a=${a#/}/; cd "$a/../.." || return; pwd)"
+
+# Set Docker/Kubernetes resource names managed by this script
+containerName="ffc-demo-api-gateway"
+kubernetesNamespace="ffc-demo"
+
+(
+  cd "${projectRoot}"
+
+  echo "Deploying API Gateway service"
+  helm upgrade \
+    --atomic \
+    --install \
+    --namespace ${kubernetesNamespace} \
+    --values helm/development-values.yaml \
+    --wait \
+    ${containerName} \
+    ./helm
+)

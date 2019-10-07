@@ -25,21 +25,20 @@
   ],
   "license": "OGL-UK-3.0",
   "dependencies": {
-    "@hapi/boom": "^7.4.2",
-    "@hapi/hapi": "^18.3.1",
-    "@hapi/hoek": "^8.0.2",
-    "@hapi/joi": "^15.1.0",
-    "@hapi/wreck": "^15.0.1"
+    "@hapi/hapi": "^18.4.0",
+    "@hapi/hoek": "^8.2.5",
+    "@hapi/joi": "^16.1.4",
+    "@hapi/wreck": "^15.1.0"
   },
   "devDependencies": {
-    "@hapi/good": "^8.2.1",
-    "@hapi/good-console": "^8.1.1",
+    "@hapi/good": "^8.2.3",
+    "@hapi/good-console": "^8.1.2",
     "@hapi/good-squeeze": "^5.2.1",
-    "blipp": "^3.1.1",
+    "blipp": "^4.0.1",
     "jest": "^24.9.0",
     "jest-junit": "^8.0.0",
-    "nodemon": "^1.19.1",
-    "standard": "^12.0.1"
+    "nodemon": "^1.19.2",
+    "standard": "^14.3.1"
   },
   "standard": {
     "globals": [
