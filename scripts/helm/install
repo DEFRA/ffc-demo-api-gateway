@@ -15,8 +15,8 @@ kubernetesNamespace="ffc-demo"
     --atomic \
     --install \
     --namespace ${kubernetesNamespace} \
-    --values helm/development-values.yaml \
+    --values helm/ffc-demo-api-gateway/development-values.yaml \
     --wait \
     ${containerName} \
-    ./helm
+    ./helm/ffc-demo-api-gateway
 )
