@@ -35,9 +35,9 @@ steps:
   displayName: set container tag if release
   # update helm charts tag and version if files ready for publishing chart
 - script: |
-    sed -i -e 's/image: ffc-demo-api-gateway/image: ffc-demo-api-gateway:$(containerTag)/' ./helm/values.yaml
+    sed -i -e 's/image: ffc-demo-api-gateway/image: ffc-demo-api-gateway:$(containerTag)/' ./helm/ffc-demo-api-gateway/values.yaml
     versionTag=`echo $(containerTag) | sed 's/v//'`
-    sed -i -e 's/version: 1.0.0/version: '"$versionTag"'/' ./helm/Chart.yaml
+    sed -i -e 's/version: 1.0.0/version: '"$versionTag"'/' ./helm/ffc-demo-api-gateway/Chart.yaml
   condition: and(succeeded(), contains(variables['Build.SourceBranch'], 'refs/tags'))
   displayName: update values and Chart yaml for release
   # create safe container tag for use in namespaces
@@ -120,7 +120,7 @@ steps:
     namespace: $(imageName)-$(safeContainerTag)
     command: upgrade
     chartType: filepath
-    chartPath: helm
+    chartPath: helm/ffc-demo-api-gateway
     releaseName: $(imageName)-$(containerTag)
     arguments: --set image=$(azureContainerRegistryFull)/$(imageName):$(containerTag) --set container.redeployOnChange=$(Build.BuildId) --set container.imagePullPolicy=Always --atomic
     install: true
@@ -157,7 +157,7 @@ steps:
       helm init -c
       az configure --defaults acr=$(azureContainerRegistry)
       az acr helm repo add
-      helm package ./helm --save
+      helm package ./helm/ffc-demo-api-gateway --save
       packageFile=`ls elm-rbac-* |  xargs echo`
       az acr helm push --force $packageFile
       az acr helm list
@@ -188,13 +188,13 @@ steps:
   displayName: 'helm package'
   inputs:
     command: package
-    chartPath: ./helm
+    chartPath: ./helm/ffc-demo-api-gateway
     save: false
   # copy yaml values for release  
 - task: CopyFiles@2
   displayName: 'Copy values files'
   inputs:
-    SourceFolder: helm
+    SourceFolder: helm/ffc-demo-api-gateway
     Contents: '*-values.yaml'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
   # publish artifact for release
