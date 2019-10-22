@@ -1,0 +1,9 @@
+environment: production
+name: aws-ffc-demo
+imagePullSecret: myregistrykey
+service:
+  port: 443
+  type: NodePort
+container:
+  allowPrivilegeEscalation: true
+  imagePullPolicy: Always
