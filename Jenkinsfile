@@ -2,7 +2,8 @@ def registry = '562955126301.dkr.ecr.eu-west-2.amazonaws.com'
 def regCredsId = 'ecr:eu-west-2:ecr-user'
 def kubeCredsId = 'awskubeconfig002'
 def ingressServer = "ffc.aws-int.defra.cloud"
-def imageName = 'ffc-demo-api-gateway-test'
+def imageName = 'ffc-demo-api-gateway'
+def testImageName = 'ffc-demo-api-gateway-test'
 def repoName = 'ffc-demo-api-gateway'
 def branch = ''
 def pr = ''
@@ -26,10 +27,14 @@ def getVariables(repoName) {
     return [branch, pr, containerTag,  getMergedPrNo()]
 }
 
+def buildProductionImage(name, suffix) {
+  sh 'docker image prune -f'
+  sh "docker-compose -p $name-$suffix build --force-rm --no-cache --pull $name"
+}
+
 def buildTestImage(name, suffix) {
   sh 'docker image prune -f'
-  // NOTE: the docker-compose file currently makes use of global $BUILD_NUMBER env vars fo image names
-  sh "docker-compose -p $name-$suffix -f docker-compose.test.yaml build --no-cache $name"
+  sh "docker-compose -p $name-$suffix -f docker-compose.test.yaml build --force-rm --no-cache --pull $name"
 }
 
 def runTests(name, suffix) {
@@ -95,13 +100,14 @@ node {
     (branch, pr, containerTag, mergedPrNo) = getVariables(repoName)
   }
   stage('Build test image') {
-    buildTestImage(imageName, BUILD_NUMBER)
+    buildTestImage(testImageName, BUILD_NUMBER)
   }
   stage('Run tests') {
-      runTests(imageName, BUILD_NUMBER)
+      runTests(testImageName, BUILD_NUMBER)
   }
-  // note: there should be a `build production image` step here,
-  // but the docker file is currently not set up to create a production only image
+  stage('Build production image') {
+    buildProductionImage(imageName, BUILD_NUMBER)
+  }
   stage('Push container image') {
     pushContainerImage(registry, regCredsId, imageName, containerTag)
   }
