@@ -113,7 +113,7 @@ node {
   }
   if (pr != '') {
     stage('Helm install') {
-      def extraCommands = "--values ./helm/ffc-demo-$repoName/jenkins-aws.yaml --set name=ffc-demo-$containerTag,ingress.server=$ingressServer,ingress.endpoint=ffc-demo-$containerTag"
+      def extraCommands = "--values ./helm/$repoName/jenkins-aws.yaml --set name=ffc-demo-$containerTag,ingress.server=$ingressServer,ingress.endpoint=ffc-demo-$containerTag"
       deployPR(kubeCredsId, registry, imageName, containerTag, extraCommands)
       echo "Build available for review at https://ffc-demo-$containerTag.$ingressServer"
     }
