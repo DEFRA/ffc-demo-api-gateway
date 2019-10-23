@@ -101,7 +101,7 @@ node {
     buildTestImage(testImageName, BUILD_NUMBER)
   }
   stage('Run tests') {
-      runTests(testImageName, BUILD_NUMBER)
+    runTests(testImageName, BUILD_NUMBER)
   }
   stage('Build production image') {
     buildProductionImage(imageName, BUILD_NUMBER)
@@ -124,7 +124,7 @@ node {
   if (mergedPrNo != '') {
     stage('Remove merged PR') {
       sh "echo removing deployment for PR $mergedPrNo"
-      undeployPR(kubeCredsId, imageName, mergedPrNo)
+      undeployPR(kubeCredsId, imageName, "pr$mergedPrNo")
     }
   }
 }
