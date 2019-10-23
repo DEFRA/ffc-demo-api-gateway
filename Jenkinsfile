@@ -13,13 +13,26 @@ def getCommitSha() {
   return sh(returnStdout: true, script: "git rev-parse HEAD").trim()
 }
 
+def getMergedPrNo() {
+    def mergedPrNo = sh(returnStdout: true, script: "git log --pretty=oneline --abbrev-commit -1 | sed -n 's/.*(#\\([0-9]\\+\\)).*/\\1/p'").trim()
+    return mergedPrNo ? "pr$mergedPrNo" : ''
+}
+
 def getRepoURL() {
   return sh(returnStdout: true, script: "git config --get remote.origin.url").trim()
 }
 
-def updateGithubCommitStatus(message, state) {
-  repoUrl = getRepoURL()
-  commitSha = getCommitSha()
+def getVariables(repoName) {
+    def branch = BRANCH_NAME
+    // Use the GitHub API to get the open PR for a branch
+    // Note: This will cause issues if one branch has two open PRs
+    def pr = sh(returnStdout: true, script: "curl https://api.github.com/repos/DEFRA/$repoName/pulls?state=open | jq '.[] | select(.head.ref == \"$branch\") | .number'").trim()
+    def rawTag = pr == '' ? branch : "pr$pr"
+    def containerTag = rawTag.replaceAll(/[^a-zA-Z0-9]/, '-').toLowerCase()
+    return [branch, pr, containerTag,  getMergedPrNo(), getRepoURL(), getCommitSha()]
+}
+
+def updateGithubCommitStatus(message, state, repoUrl, commitSha) {
   step([
     $class: 'GitHubCommitStatusSetter',
     reposSource: [$class: "ManuallyEnteredRepositorySource", url: repoUrl],
@@ -34,23 +47,6 @@ def updateGithubCommitStatus(message, state) {
       ]
     ]
   ])
-}
-
-def getMergedPrNo() {
-    def mergedPrNo = sh(returnStdout: true, script: "git log --pretty=oneline --abbrev-commit -1 | sed -n 's/.*(#\\([0-9]\\+\\)).*/\\1/p'").trim()
-    return mergedPrNo ? "pr$mergedPrNo" : ''
-}
-
-def getVariables(repoName) {
-    // jenkins checks out a commit, rather than a branch
-    // use the git cli to get branch info for the commit
-    def branch = sh(returnStdout: true, script: 'git ls-remote --heads origin | grep $(git rev-parse HEAD) | cut -d / -f 3').trim()
-    // and the github API to get the current open PR for the branch.
-    // Note: This will cause issues if one branch has two open PRs
-    def pr = sh(returnStdout: true, script: "curl https://api.github.com/repos/DEFRA/$repoName/pulls?state=open | jq '.[] | select(.head.ref == \"$branch\") | .number'").trim()
-    def rawTag = pr == '' ? branch : "pr$pr"
-    def containerTag = rawTag.replaceAll(/[^a-zA-Z0-9]/, '-').toLowerCase()
-    return [branch, pr, containerTag,  getMergedPrNo()]
 }
 
 def buildProductionImage(name, suffix) {
@@ -124,10 +120,19 @@ node {
 
   try {
     stage('Report pending status') {
-      updateGithubCommitStatus('Build started','PENDING')
+      updateGithubCommitStatus('Build started', 'PENDING', repoUrl, commitSha)
     }
     stage('Set branch, PR, and containerTag variables') {
-      (branch, pr, containerTag, mergedPrNo) = getVariables(repoName)
+      (branch, pr, containerTag, mergedPrNo, repoUrl, commitSha) = getVariables(repoName)
+
+      if (pr) {
+        sh "echo Building $pr"
+      } else if (branch == "master") {
+        sh "echo Building master branch"
+      } else {
+        currentBuild.result = 'ABORTED'
+        error('Build aborted - not a PR or a master branch')
+      }
     }
     stage('Build test image') {
       buildTestImage(testImageName, BUILD_NUMBER)
@@ -160,10 +165,10 @@ node {
       }
     }
     stage('Report success') {
-      updateGithubCommitStatus('Complete','SUCCESS')
+      updateGithubCommitStatus('Complete', 'SUCCESS', repoUrl, commitSha)
     }
   } catch (error) {
-    updateGithubCommitStatus(error.message,'FAILURE')
+    updateGithubCommitStatus(error.message, 'FAILURE', repoUrl, commitSha)
     throw error
   }
 }
