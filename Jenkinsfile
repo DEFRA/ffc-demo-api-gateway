@@ -91,8 +91,8 @@ def deployPR(credentialsId, registry, imageName, tag, extraCommands) {
 def undeployPR(credentialsId, imageName, tag) {
   withKubeConfig([credentialsId: credentialsId]) {
     def deploymentName = "$imageName-$tag"
-    sh "helm delete --purge $deploymentName || echo error removing deployment $deploymentName"
-    sh "kubectl delete $deploymentName"
+    sh "helm delete --purge $deploymentName || echo Error removing deployment $deploymentName"
+    sh "kubectl delete namespace $deploymentName || echo Error removing namespace $deploymentName"
   }
 }
 
