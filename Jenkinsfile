@@ -9,6 +9,33 @@ def pr = ''
 def mergedPrNo = ''
 def containerTag = ''
 
+def getCommitSha() {
+  return sh(returnStdout: true, script: "git rev-parse HEAD").trim()
+}
+
+def getRepoURL() {
+  return sh(returnStdout: true, script: "git config --get remote.origin.url").trim()
+}
+
+def updateGithubCommitStatus(message, state) {
+  repoUrl = getRepoURL()
+  commitSha = getCommitSha()
+  step([
+    $class: 'GitHubCommitStatusSetter',
+    reposSource: [$class: "ManuallyEnteredRepositorySource", url: repoUrl],
+    commitShaSource: [$class: "ManuallyEnteredShaSource", sha: commitSha],
+    errorHandlers: [
+      [$class: 'ShallowAnyErrorHandler']
+    ],
+    statusResultSource: [
+      $class: "ConditionalStatusResultSource",
+      results: [
+        [$class: "AnyBuildResult", message: message, state: state]
+      ]
+    ]
+  ])
+}
+
 def getMergedPrNo() {
     def mergedPrNo = sh(returnStdout: true, script: "git log --pretty=oneline --abbrev-commit -1 | sed -n 's/.*(#\\([0-9]\\+\\)).*/\\1/p'").trim()
     return mergedPrNo ? "pr$mergedPrNo" : ''
@@ -94,37 +121,49 @@ def publishChart(imageName) {
 
 node {
   checkout scm
-  stage('Set branch, PR, and containerTag variables') {
-    (branch, pr, containerTag, mergedPrNo) = getVariables(repoName)
-  }
-  stage('Build test image') {
-    buildTestImage(testImageName, BUILD_NUMBER)
-  }
-  stage('Run tests') {
-    runTests(testImageName, BUILD_NUMBER)
-  }
-  stage('Build production image') {
-    buildProductionImage(imageName, BUILD_NUMBER)
-  }
-  stage('Push container image') {
-    pushContainerImage(registry, regCredsId, imageName, containerTag)
-  }
-  if (pr != '') {
-    stage('Helm install') {
-      def extraCommands = "--values ./helm/$repoName/jenkins-aws.yaml"
-      deployPR(kubeCredsId, registry, imageName, containerTag, extraCommands)
-      echo "Build available for review"
+
+  try {
+    stage('Report pending status') {
+      updateGithubCommitStatus('Build started','PENDING')
     }
-  }
-  if (pr == '') {
-    stage('Publish chart') {
-      publishChart(imageName)
+    stage('Set branch, PR, and containerTag variables') {
+      (branch, pr, containerTag, mergedPrNo) = getVariables(repoName)
     }
-  }
-  if (mergedPrNo != '') {
-    stage('Remove merged PR') {
-      sh "echo removing deployment for PR $mergedPrNo"
-      undeployPR(kubeCredsId, imageName, mergedPrNo)
+    stage('Build test image') {
+      buildTestImage(testImageName, BUILD_NUMBER)
     }
+    stage('Run tests') {
+      runTests(testImageName, BUILD_NUMBER)
+    }
+    stage('Build production image') {
+      buildProductionImage(imageName, BUILD_NUMBER)
+    }
+    stage('Push container image') {
+      pushContainerImage(registry, regCredsId, imageName, containerTag)
+    }
+    if (pr != '') {
+      stage('Helm install') {
+        def extraCommands = "--values ./helm/$repoName/jenkins-aws.yaml"
+        deployPR(kubeCredsId, registry, imageName, containerTag, extraCommands)
+        echo "Build available for review"
+      }
+    }
+    if (pr == '') {
+      stage('Publish chart') {
+        publishChart(imageName)
+      }
+    }
+    if (mergedPrNo != '') {
+      stage('Remove merged PR') {
+        sh "echo removing deployment for PR $mergedPrNo"
+        undeployPR(kubeCredsId, imageName, mergedPrNo)
+      }
+    }
+    stage('Report success') {
+      updateGithubCommitStatus('Complete','SUCCESS')
+    }
+  } catch (error) {
+    updateGithubCommitStatus(error.message,'FAILURE')
+    throw error
   }
 }
