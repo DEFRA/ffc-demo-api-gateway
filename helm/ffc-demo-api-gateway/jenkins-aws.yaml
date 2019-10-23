@@ -1,5 +1,5 @@
 environment: production
-name: aws-ffc-demo
+name: ffc-demo-api-gateway
 imagePullSecret: myregistrykey
 service:
   port: 443
