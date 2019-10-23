@@ -119,9 +119,6 @@ node {
   checkout scm
 
   try {
-    stage('Report pending status') {
-      updateGithubCommitStatus('Build started', 'PENDING', repoUrl, commitSha)
-    }
     stage('Set branch, PR, and containerTag variables') {
       (branch, pr, containerTag, mergedPrNo, repoUrl, commitSha) = getVariables(repoName)
 
@@ -133,6 +130,9 @@ node {
         currentBuild.result = 'ABORTED'
         error('Build aborted - not a PR or a master branch')
       }
+    }
+    stage('Report pending status') {
+      updateGithubCommitStatus('Build started', 'PENDING', repoUrl, commitSha)
     }
     stage('Build test image') {
       buildTestImage(testImageName, BUILD_NUMBER)
