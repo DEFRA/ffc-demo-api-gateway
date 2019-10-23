@@ -32,7 +32,6 @@ def buildProductionImage(name, suffix) {
 }
 
 def buildTestImage(name, suffix) {
-  sh 'docker image prune -f'
   sh "docker-compose -p $name-$suffix -f docker-compose.test.yaml build --force-rm --no-cache --pull $name"
 }
 
