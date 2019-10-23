@@ -111,7 +111,7 @@ node {
   }
   if (pr != '') {
     stage('Helm install') {
-      def extraCommands = "--values ./helm/$repoName/jenkins-aws.yaml --set name=ffc-demo-api-gateway-$containerTag"
+      def extraCommands = "--values ./helm/$repoName/jenkins-aws.yaml"
       deployPR(kubeCredsId, registry, imageName, containerTag, extraCommands)
       echo "Build available for review"
     }
