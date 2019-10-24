@@ -137,8 +137,6 @@ node {
     stage('Run tests') {
       runTests(testImageName, BUILD_NUMBER)
     }
-    // note: there should be a `build production image` step here,
-    // but the docker file is currently not set up to create a production only image
     stage('Push container image') {
       pushContainerImage(registry, regCredsId, imageName, containerTag)
     }
