@@ -51,11 +51,6 @@ def updateGithubCommitStatus(message, state, repoUrl, commitSha) {
   ])
 }
 
-def buildProductionImage(name, suffix) {
-  sh 'docker image prune -f'
-  sh "docker-compose -p $name-$suffix build --force-rm --no-cache --pull $name"
-}
-
 def buildTestImage(name, suffix) {
   sh "docker-compose -p $name-$suffix -f docker-compose.test.yaml build --force-rm --no-cache --pull $name"
 }
@@ -142,9 +137,8 @@ node {
     stage('Run tests') {
       runTests(testImageName, BUILD_NUMBER)
     }
-    stage('Build production image') {
-      buildProductionImage(imageName, BUILD_NUMBER)
-    }
+    // note: there should be a `build production image` step here,
+    // but the docker file is currently not set up to create a production only image
     stage('Push container image') {
       pushContainerImage(registry, regCredsId, imageName, containerTag)
     }
