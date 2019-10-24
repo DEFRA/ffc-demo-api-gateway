@@ -5,9 +5,11 @@ def imageName = 'ffc-demo-api-gateway'
 def testImageName = 'ffc-demo-api-gateway-test'
 def repoName = 'ffc-demo-api-gateway'
 def branch = ''
-def pr = ''
-def mergedPrNo = ''
+def commitSha = ''
 def containerTag = ''
+def mergedPrNo = ''
+def pr = ''
+def repoUrl = ''
 
 def getCommitSha() {
   return sh(returnStdout: true, script: "git rev-parse HEAD").trim()
