@@ -17,8 +17,8 @@ container:
   runAsUser: 1000
   readOnlyRootFilesystem: true
   allowPrivilegeEscalation: false
-  userServiceUrl: http://ffc-demo-user-service.ffc-demo
-  claimServiceUrl: http://ffc-demo-claim-service.ffc-demo
+  claimServiceUrl: http://ffc-demo-claim-service.default
+  userServiceUrl: http://ffc-demo-user-service.default
   restartPolicy: Always
 replicaCount: 1
 minReadySeconds: 5
