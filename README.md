@@ -5,7 +5,7 @@
 
 Digital service mock to claim public money in the event property subsides into mine shaft.  This service receives submitted applications from the web application and sends the user data to the user service and the claim data to the claim service via http.  A response is sent back to the web front end as confirmation.
 
-# Prerequisites
+## Prerequisites
 
 Either:
 - Docker
@@ -18,7 +18,7 @@ Or:
 Or:
 - Node 10
 
-# Environment variables
+## Environment variables
 
 The following environment variables are required by the application container. Values for development are set in the Docker Compose configuration. Default values for production-like deployments are set in the Helm chart and may be overridden by build and release pipelines.
 
@@ -30,7 +30,7 @@ The following environment variables are required by the application container. V
 | FFC_DEMO_CLAIM_SERVICE     | Url of service Claim service   | no       | http://localhost:3003 |                             |       |
 | FFC_DEMO_REST_CLIENT_TIMEOUT_IN_MILLIS | Rest client timout | no       | 5000                  |                             |       |
 
-# How to run tests
+## How to run tests
 
 A convenience script is provided to run automated tests in a containerised environment. The first time this is run, container images required for testing will be automatically built. An optional `--build` (or `-b`) flag may be used to rebuild these images in future (for example, to apply dependency updates).
 
@@ -51,14 +51,14 @@ Alternatively, the same tests may be run locally via npm:
 npm run test
 ```
 
-# Running the application
+## Running the application
 
 The application is designed to run in containerised environments, using Docker Compose in development and Kubernetes in production.
 
 - Scripts are provided to aid local development and testing using Docker Compose.
 - A Helm chart is provided for production deployments to Kubernetes.
 
-## Build container image
+### Build container image
 
 Container images are built using Docker Compose, with the same images used to run the service with either Docker Compose or Kubernetes.
 
@@ -69,7 +69,7 @@ By default, the start script will build (or rebuild) images so there will rarely
 docker-compose build
 ```
 
-## Start and stop the service
+### Start and stop the service
 
 Use the provided [`start`](./scripts/start) and [`stop`](./scripts/stop) scripts to run the service locally via Docker Compose. Both scripts accept a number of flags to customise their behaviour. For full instructions on the flags available to each script, use the `--help` or `-h` flag:
 
@@ -90,7 +90,7 @@ The underlying `docker-compose up/down` commands can be customised by appending 
 scripts/start -- --detach
 ```
 
-## Test the service
+### Test the service
 
 The service binds to a port on the host machine so it can be tested manually by sending HTTP requests to the bound port using a tool such as [Postman](https://www.getpostman.com) or `curl`.
 
@@ -115,13 +115,13 @@ Sample valid JSON for the `/claim` endpoint is:
 }
 ```
 
-## Link to sibling services
+### Link to sibling services
 
 To test interactions with sibling services in the FFC demo application, it is necessary to connect each service to an external Docker network, along with shared dependencies such as message queues. The most convenient approach for this is to start the entire application stack from the [`ffc-demo-development`](https://github.com/DEFRA/ffc-demo-development) repository.
 
 It is also possible to run a limited subset of the application stack, using the [`start`](./scripts/start) script's `--link` flag to join each service to the shared Docker network. See the [`ffc-demo-development`](https://github.com/DEFRA/ffc-demo-development) Readme for instructions.
 
-## Deploy to Kubernetes
+### Deploy to Kubernetes
 
 For production deployments, a helm chart is included in the `.\helm` folder. This service connects to an AMQP 1.0 message broker, using credentials defined in [values.yaml](./helm/ffc-demo-api-gateway/values.yaml), which must be made available prior to deployment.
 
@@ -135,7 +135,7 @@ scripts/helm/install
 scripts/helm/delete
 ```
 
-### Accessing the pod
+#### Accessing the pod
 
 By default, the service is not exposed via an endpoint within Kubernetes.
 
@@ -148,14 +148,14 @@ kubectl port-forward --namespace=ffc-demo deployment/ffc-demo-api-gateway 3001:3
 
 Once the port is forwarded, the service can be accessed and tested in the same way as described in the "Test the service" section above.
 
-### Probes
+#### Probes
 
 The service has both an Http readiness probe and an Http liveness probe configured to receive at the below end points.
 
 Readiness: `/healthy`
 Liveness: `/healthz`
 
-# Dependency management
+## Dependency management
 
 Dependencies should be managed within a container using the development image for the app. This will ensure that any packages with environment-specific variants are installed with the correct variant for the contained environment, rather than the host system which may differ between development and production.
 
@@ -175,7 +175,7 @@ scripts/exec npm update
 scripts/start --clean
 ```
 
-# Build Pipeline
+## Build Pipeline
 
 The [azure-pipelines.yaml](azure-pipelines.yaml) performs the following tasks:
 - Runs unit tests
@@ -187,7 +187,7 @@ Builds will be deployed into a namespace with the format `ffc-demo-api-gateway-{
 
 A detailed description on the build pipeline and PR work flow is available in the [Defra Confluence page](https://eaflood.atlassian.net/wiki/spaces/FFCPD/pages/1281359920/Build+Pipeline+and+PR+Workflow)
 
-## Testing a pull request
+### Testing a pull request
 
 A PR can also be tested by reconfiguring the api-gateway service to use the URL of the PR rather than the current release in the development cluster. Create a `patch.yaml` file containing the desired URL:
 
@@ -210,3 +210,19 @@ then apply the patch:
 Once tested the patch can be rolled back, i.e.
 
 `kubectl rollout undo --namespace default deployment/ffc-demo-api-gateway`
+
+## License
+
+THIS INFORMATION IS LICENSED UNDER THE CONDITIONS OF THE OPEN GOVERNMENT LICENCE found at:
+
+<http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3>
+
+The following attribution statement MUST be cited in your products and applications when using this information.
+
+> Contains public sector information licensed under the Open Government license v3
+
+### About the license
+
+The Open Government Licence (OGL) was developed by the Controller of Her Majesty's Stationery Office (HMSO) to enable information providers in the public sector to license the use and re-use of their information under a common open licence.
+
+It is designed to encourage use and re-use of information freely and flexibly, with only a few conditions.
