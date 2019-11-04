@@ -61,9 +61,9 @@ node {
       stage('Trigger Deployment') {
         withCredentials([
           string(credentialsId: 'JenkinsDeployUrl', variable: 'jenkinsDeployUrl'),
-          string(credentialsId: 'ffc-demo-user-service-deploy-token', variable: 'jenkinsToken')
+          string(credentialsId: 'ffc-demo-api-service-deploy-token', variable: 'jenkinsToken')
         ]) {
-          defraUtils.triggerDeploy(jenkinsDeployUrl, 'ffc-demo-user-service-deploy', jenkinsToken, ['chartVersion':'1.0.0'])
+          defraUtils.triggerDeploy(jenkinsDeployUrl, 'ffc-demo-api-service-deploy', jenkinsToken, ['chartVersion':'1.0.0'])
         }
       }
     // }
