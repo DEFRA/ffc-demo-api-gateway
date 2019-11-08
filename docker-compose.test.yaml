@@ -4,15 +4,8 @@ version: '3.4'
 # that test output is saved to the host
 
 services:
-  ffc-demo-api-gateway-test:
-    build: .
+  ffc-demo-api-gateway:
     command: npm run test
-    image: ffc-demo-api-gateway-test
-    environment:
-      NODE_ENV: development
-    volumes:
-      - node_modules:/usr/src/app/node_modules
-      - .:/usr/src/app
 
 volumes:
   node_modules:

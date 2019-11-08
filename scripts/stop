@@ -58,7 +58,10 @@ done
 
 compose() {
   if [ "${link}" = "true" ]; then
-    docker-compose -f docker-compose.yaml -f docker-compose.link.yaml $@
+    docker-compose \
+      -f docker-compose.yaml \
+      -f docker-compose.link.yaml \
+      $@
   else
     docker-compose $@
   fi

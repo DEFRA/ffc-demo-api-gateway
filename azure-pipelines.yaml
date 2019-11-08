@@ -20,7 +20,6 @@ variables:
     kubernetesCluster: MineSupport
     mergedPrNo:
     safeContainerTag: $(Build.SourceBranchName)
-    testImageName: ffc-demo-api-gateway-test
 steps:
   # extracts PR number from refs/pull/{prNo}/ branch name and sets to containerTag if pull request
 - script: |
@@ -65,7 +64,8 @@ steps:
     containerregistrytype: Azure Container Registry
     azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
     azureContainerRegistry: $(azureContainerRegistryFull)
-    dockerComposeFile: docker-compose.test.yaml
+    dockerComposeFile: docker-compose.yaml
+    additionalDockerComposeFiles: docker-compose.test.yaml
     projectName: $(Build.Repository.Name)
     qualifyImageNames: true
   displayName: build test image
@@ -75,10 +75,11 @@ steps:
     containerregistrytype: Azure Container Registry
     azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
     azureContainerRegistry: $(azureContainerRegistryFull)
-    dockerComposeFile: docker-compose.test.yaml
+    dockerComposeFile: docker-compose.yaml
+    additionalDockerComposeFiles: docker-compose.test.yaml
     projectName: $(Build.Repository.Name)
     qualifyImageNames: true
-    dockerComposeCommand: run $(testImageName)
+    dockerComposeCommand: run $(imageName)
   displayName: run tests
   # build base image
 - task: DockerCompose@0

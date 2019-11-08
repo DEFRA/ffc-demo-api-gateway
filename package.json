@@ -40,6 +40,11 @@
     "nodemon": "^1.19.2",
     "standard": "^14.3.1"
   },
+  "nodemonConfig": {
+    "ignore": [
+      "test-output/**"
+    ]
+  },
   "standard": {
     "globals": [
       "describe",

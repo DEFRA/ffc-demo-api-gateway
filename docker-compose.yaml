@@ -4,14 +4,11 @@ services:
   ffc-demo-api-gateway:
     build: .
     image: ffc-demo-api-gateway
-    container_name: ffc-demo-api-gateway
     command: npm run start:watch
     environment:
       FFC_DEMO_CLAIM_SERVICE: http://ffc-demo-claim-service:3003
       FFC_DEMO_USER_SERVICE: http://ffc-demo-user-service:3002
       NODE_ENV: development
-    ports:
-      - "3001:3001"
     volumes:
       - node_modules:/usr/src/app/node_modules
       - .:/usr/src/app
