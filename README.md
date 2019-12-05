@@ -55,7 +55,6 @@ npm run test
 
 The application is designed to run in containerised environments, using Docker Compose in development and Kubernetes in production.
 
-- Scripts are provided to aid local development and testing using Docker Compose.
 - A Helm chart is provided for production deployments to Kubernetes.
 
 ### Build container image
