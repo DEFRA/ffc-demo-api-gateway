@@ -1,75 +1,75 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: {{ .Values.name }}
+  name: {{ quote .Values.name }}
 spec:
-  replicas: {{ .Values.replicaCount }}
-  minReadySeconds: {{ .Values.minReadySeconds }}
+  replicas: {{ quote .Values.replicaCount }}
+  minReadySeconds: {{ quote .Values.minReadySeconds }}
   template:
     metadata:
       labels:
-        app: {{ .Values.name }}
-        environment: {{ .Values.environment }}
+        app: {{ quote .Values.name }}
+        environment: {{ quote .Values.environment }}
       annotations:
-        redeployOnChange: "{{ .Values.container.redeployOnChange }}"
+        redeployOnChange: "{{ quote .Values.container.redeployOnChange }}"
     spec:
-      restartPolicy: {{ .Values.container.restartPolicy }}
-      {{- if .Values.imagePullSecret }}
+      restartPolicy: {{ quote .Values.container.restartPolicy }}
+      {{- if quote .Values.imagePullSecret }}
       imagePullSecrets:
-      - name: {{ .Values.imagePullSecret }}
+      - name: {{ quote .Values.imagePullSecret }}
       {{- end }}
       containers:
-        - name: {{ .Values.name }}
-          image: {{ .Values.image }}
-        {{- if .Values.container.command }}
-        {{- with .Values.container.command }}
+        - name: {{ quote .Values.name }}
+          image: {{ quote .Values.image }}
+        {{- if quote .Values.container.command }}
+        {{- with quote .Values.container.command }}
           command:
             {{- toYaml . | nindent 12 }}
         {{- end }}
-        {{- with .Values.container.args }}
+        {{- with quote .Values.container.args }}
           args:
             {{- toYaml . | nindent 12 }}
         {{- end }}
         {{- end }}
-          imagePullPolicy: {{ .Values.container.imagePullPolicy }}
+          imagePullPolicy: {{ quote .Values.container.imagePullPolicy }}
           securityContext:
-            runAsUser: {{ .Values.container.runAsUser }}
-            runAsNonRoot: {{ .Values.container.runAsNonRoot }}
-            readOnlyRootFilesystem: {{ .Values.container.readOnlyRootFilesystem }}
-            allowPrivilegeEscalation: {{ .Values.container.allowPrivilegeEscalation }}
+            runAsUser: {{ quote .Values.container.runAsUser }}
+            runAsNonRoot: {{ quote .Values.container.runAsNonRoot }}
+            readOnlyRootFilesystem: {{ quote .Values.container.readOnlyRootFilesystem }}
+            allowPrivilegeEscalation: {{ quote .Values.container.allowPrivilegeEscalation }}
           ports:
             - name: http
               containerPort: 3001
               protocol: TCP
           resources:
             requests:
-                memory: {{ .Values.container.requestMemory | quote }}
-                cpu: {{ .Values.container.requestCpu | quote }}
+                memory: {{ quote .Values.container.requestMemory }}
+                cpu: {{ quote .Values.container.requestCpu }}
             limits:
-                memory: {{ .Values.container.limitMemory | quote }}
-                cpu: {{ .Values.container.limitCpu | quote }}
+                memory: {{ quote .Values.container.limitMemory }}
+                cpu: {{ quote .Values.container.limitCpu }}
           env:
             - name: environment
-              value: {{ .Values.environment }}
+              value: {{ quote .Values.environment }}
             - name: FFC_DEMO_REST_CLIENT_TIMEOUT_IN_MILLIS
-              value: {{ .Values.restClientTimeoutMillis | quote }}
+              value: {{ quote .Values.restClientTimeoutMillis }}
             - name: FFC_DEMO_USER_SERVICE
-              value: {{ .Values.container.userServiceUrl }}
+              value: {{ quote .Values.container.userServiceUrl }}
             - name: FFC_DEMO_CLAIM_SERVICE
-              value: {{ .Values.container.claimServiceUrl }}
+              value: {{ quote .Values.container.claimServiceUrl }}
             - name: PORT
               value: "3001"
           livenessProbe:
             httpGet:
-              path: {{ .Values.livenessProbe.path }}
-              port: {{ .Values.livenessProbe.port }}
-            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
-            failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+              path: {{ quote .Values.livenessProbe.path }}
+              port: {{ quote .Values.livenessProbe.port }}
+            initialDelaySeconds: {{ quote .Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ quote .Values.livenessProbe.periodSeconds }}
+            failureThreshold: {{ quote .Values.livenessProbe.failureThreshold }}
           readinessProbe:
             httpGet:
-              path: {{ .Values.readinessProbe.path }}
-              port: {{ .Values.readinessProbe.port }}
-            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
-            failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
+              path: {{ quote .Values.readinessProbe.path }}
+              port: {{ quote .Values.readinessProbe.port }}
+            initialDelaySeconds: {{ quote .Values.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ quote .Values.readinessProbe.periodSeconds }}
+            failureThreshold: {{ quote .Values.readinessProbe.failureThreshold }}
