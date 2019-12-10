@@ -6,7 +6,7 @@ metadata:
     app: {{ quote .Values.name }}
 spec:
   ports:
-  - port: {{ quote .Values.service.port }}
+  - port: {{ .Values.service.port }}
     targetPort: http
     protocol: TCP
     name: http
