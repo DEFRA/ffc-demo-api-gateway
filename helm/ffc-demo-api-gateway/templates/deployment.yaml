@@ -52,7 +52,7 @@ spec:
             - name: environment
               value: {{ quote .Values.environment }}
             - name: FFC_DEMO_REST_CLIENT_TIMEOUT_IN_MILLIS
-              value: {{ .Values.restClientTimeoutMillis }}
+              value: {{ quote .Values.restClientTimeoutMillis }}
             - name: FFC_DEMO_USER_SERVICE
               value: {{ quote .Values.container.userServiceUrl }}
             - name: FFC_DEMO_CLAIM_SERVICE
