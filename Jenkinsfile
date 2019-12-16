@@ -12,6 +12,7 @@ def mergedPrNo = ''
 def containerTag = ''
 def sonarQubeEnv = 'SonarQube'
 def sonarScanner = 'SonarScanner'
+def timeoutInMinutes = 5
 
 node {
   checkout scm
@@ -34,7 +35,7 @@ node {
       defraUtils.analyseCode(sonarQubeEnv, sonarScanner, ['sonar.projectKey' : repoName, 'sonar.sources' : '.'])
     }
     stage("Code quality gate") {
-      defraUtils.waitForQualityGateResult(5)
+      defraUtils.waitForQualityGateResult(timeoutInMinutes)
     }
     stage('Push container image') {
       defraUtils.buildAndPushContainerImage(regCredsId, registry, imageName, containerTag)
