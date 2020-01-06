@@ -59,7 +59,6 @@ node {
     }
     if (pr != '') {
       stage('Helm install') {
-        def extraCommands = "--values ./helm/$repoName/jenkins-aws.yaml"
         defraUtils.deployChart(kubeCredsId, registry, imageName, containerTag, getExtraCommands(pr))
       }
     }
