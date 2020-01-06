@@ -23,7 +23,7 @@ def getExtraCommands(pr) {
   ].join(',')
 
   return [
-    "--values ./helm/$repoName/jenkins-aws.yaml",
+    "--values ./helm/ffc-demo-api-gateway/jenkins-aws.yaml",
     "--set $helmValues"
   ].join(' ')
 }
