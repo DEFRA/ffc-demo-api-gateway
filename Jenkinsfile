@@ -17,6 +17,17 @@ def localSrcFolder = '.'
 def lcovFile = './test-output/lcov.info'
 def timeoutInMinutes = 5
 
+def getExtraCommands(pr) {
+  def helmValues = [
+    /container.redeployOnChange="$pr-$BUILD_NUMBER"/
+  ].join(',')
+
+  return [
+    "--values ./helm/$repoName/jenkins-aws.yaml",
+    "--set $helmValues"
+  ].join(' ')
+}
+
 node {
   checkout scm
 
@@ -49,7 +60,7 @@ node {
     if (pr != '') {
       stage('Helm install') {
         def extraCommands = "--values ./helm/$repoName/jenkins-aws.yaml"
-        defraUtils.deployChart(kubeCredsId, registry, imageName, containerTag, extraCommands)
+        defraUtils.deployChart(kubeCredsId, registry, imageName, containerTag, getExtraCommands(pr))
       }
     }
     if (pr == '') {
