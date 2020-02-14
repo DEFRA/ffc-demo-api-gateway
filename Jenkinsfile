@@ -100,9 +100,9 @@ node {
     } 
   } catch(e) {
     defraUtils.setGithubStatusFailure(e.message)
+    defraUtils.notifySlackBuildFailure(e.message, "#generalbuildfailures")
     throw error
   } finally {
     defraUtils.deleteTestOutput(repoName)
-    defraUtils.notifySlackBuildFailure(e.message, "#generalbuildfailures")
   }
 }
