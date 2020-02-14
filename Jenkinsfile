@@ -36,7 +36,6 @@ node {
     }  
     stage('Set branch, PR, and containerTag variables') {
       (pr, containerTag, mergedPrNo) = defraUtils.getVariables(repoName, defraUtils.getPackageJsonVersion())
-      defraUtils.setGithubStatusPending()
     }
     stage('Helm lint') {
       defraUtils.lintHelm(repoName)
@@ -100,9 +99,9 @@ node {
     } 
   } catch(e) {
     defraUtils.setGithubStatusFailure(e.message)
+    defraUtils.notifySlackBuildFailure(e.message, "#generalbuildfailures")
     throw error
   } finally {
     defraUtils.deleteTestOutput(repoName)
-    defraUtils.notifySlackBuildFailure(e.message, "#generalbuildfailures")
   }
 }
