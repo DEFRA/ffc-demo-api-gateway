@@ -4,7 +4,7 @@ version: '3.7'
 # to provide dependencies and expose ports for local testing
 
 services:
-  ffc-demo-api-gateway:
+  app:
     build:
       target: development
     image: ffc-demo-api-gateway-development
