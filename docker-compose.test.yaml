@@ -5,7 +5,7 @@ version: '3.7'
 # ports to the host machine.
 
 services:
-  app:
+  ffc-demo-api-gateway:
     build:
       target: development
     image: ffc-demo-api-gateway-development

@@ -1,7 +1,7 @@
 version: '3.7'
 
 services:
-  app:
+  ffc-demo-api-gateway:
     build:
       context: .
       target: production

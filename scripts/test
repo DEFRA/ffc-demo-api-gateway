@@ -5,7 +5,7 @@ projectRoot="$(a="/$0"; a=${a%/*}; a=${a:-.}; a=${a#/}/; cd "$a/.." || return; p
 
 command="$@"
 project="ffc-demo-api-gateway"
-service="app"
+service="ffc-demo-api-gateway"
 
 compose() {
   docker-compose \

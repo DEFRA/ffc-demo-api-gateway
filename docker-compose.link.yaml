@@ -5,7 +5,7 @@ version: '3.7'
 # Dependencies shared with other projects should be started separately.
 
 services:
-  app:
+  ffc-demo-api-gateway:
     build:
       target: development
     image: ffc-demo-api-gateway-development
