@@ -14,8 +14,7 @@ ARG PORT_DEBUG
 EXPOSE ${PORT} ${PORT_DEBUG}
 COPY --chown=node:node package*.json ./
 RUN npm install
-COPY --chown=node:node server/ ./app/server/
-COPY --chown=node:node index.js/ ./app/index.js
+COPY --chown=node:node app/ ./app/
 CMD [ "npm", "run", "start:watch" ]
 
 # Production
@@ -28,6 +27,5 @@ ENV PORT ${PORT}
 EXPOSE ${PORT}
 COPY --from=development /home/node/package*.json ./
 COPY --from=development /home/node/app/ ./app/
-COPY --from=development /home/node/index.js/ ./app/index.js
 RUN npm ci
-CMD [ "node", "index.js" ]
+CMD [ "node", "app" ]

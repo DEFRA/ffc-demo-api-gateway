@@ -1,4 +1,4 @@
-const createServer = require('./server')
+const createServer = require('./app/server')
 
 createServer()
   .then(server => server.start())

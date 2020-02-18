@@ -16,10 +16,9 @@ services:
       - "3001:3001"
     volumes:
       - ./.git/:/home/node/.git/
-      - ./server/:/home/node/server/
+      - ./app/:/home/node/app/
       - ./test/:/home/node/test/
       - ./test-output/:/home/node/test-output/
-      - ./index.js:/home/node/index.js
       - ./jest.config.js:/home/node/jest.config.js
       - ./package.json:/home/node/package.json
 
