@@ -11,7 +11,7 @@ def mergedPrNo = ''
 def containerTag = ''
 def sonarQubeEnv = 'SonarQube'
 def sonarScanner = 'SonarScanner'
-def containerSrcFolder = '\\/usr\\/src\\/app'
+def containerSrcFolder = '\\/home\\/node'
 def localSrcFolder = '.'
 def lcovFile = './test-output/lcov.info'
 def timeoutInMinutes = 5
@@ -33,7 +33,7 @@ node {
   try {
     stage('Set GitHub status as pending'){
       defraUtils.setGithubStatusPending()
-    }  
+    }
     stage('Set branch, PR, and containerTag variables') {
       (pr, containerTag, mergedPrNo) = defraUtils.getVariables(repoName, defraUtils.getPackageJsonVersion())
     }
@@ -75,7 +75,7 @@ node {
       }
       stage('Trigger GitHub release') {
         withCredentials([
-          string(credentialsId: 'github_ffc_platform_repo', variable: 'gitToken') 
+          string(credentialsId: 'github_ffc_platform_repo', variable: 'gitToken')
         ]) {
           defraUtils.triggerRelease(containerTag, repoName, containerTag, gitToken)
         }
@@ -96,7 +96,7 @@ node {
     }
     stage('Set GitHub status as success'){
       defraUtils.setGithubStatusSuccess()
-    } 
+    }
   } catch(e) {
     defraUtils.setGithubStatusFailure(e.message)
     defraUtils.notifySlackBuildFailure(e.message, "#generalbuildfailures")
