@@ -2,18 +2,18 @@
 import uk.gov.defra.ffc.DefraUtils
 def defraUtils = new DefraUtils()
 
-def registry = '562955126301.dkr.ecr.eu-west-2.amazonaws.com'
-def regCredsId = 'ecr:eu-west-2:ecr-user'
-def kubeCredsId = 'FFCLDNEKSAWSS001_KUBECONFIG'
-def repoName = 'ffc-demo-api-gateway'
-def pr = ''
-def mergedPrNo = ''
+def containerSrcFolder = '\\/home\\/node'
 def containerTag = ''
+def kubeCredsId = 'FFCLDNEKSAWSS001_KUBECONFIG'
+def lcovFile = './test-output/lcov.info'
+def localSrcFolder = '.'
+def mergedPrNo = ''
+def pr = ''
+def regCredsId = 'ecr:eu-west-2:ecr-user'
+def registry = '562955126301.dkr.ecr.eu-west-2.amazonaws.com'
+def repoName = 'ffc-demo-api-gateway'
 def sonarQubeEnv = 'SonarQube'
 def sonarScanner = 'SonarScanner'
-def containerSrcFolder = '\\/home\\/node'
-def localSrcFolder = '.'
-def lcovFile = './test-output/lcov.info'
 def timeoutInMinutes = 5
 
 def getExtraCommands(pr) {
