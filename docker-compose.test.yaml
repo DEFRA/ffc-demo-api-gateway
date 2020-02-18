@@ -1,12 +1,17 @@
 version: '3.7'
 
-# This override file should be used when running automated tests so
-# that test output is saved to the host
+# This override file should be used when running tests in CI pipelines
+# to run tests against app code from the Docker image without binding
+# ports to the host machine.
 
 services:
   ffc-demo-api-gateway:
-    command: npm run test
+    build:
+      target: development
+    image: ffc-demo-api-gateway-development
+    command: npm test
     volumes:
-      - ./test/:/usr/src/app/test/
-      - ./test-output/:/usr/src/app/test-output/
-      - ./jest.config.js:/usr/src/app/jest.config.js
+      - ./test/:/home/node/test/
+      - ./test-output/:/home/node/test-output/
+      - ./jest.config.js:/home/node/jest.config.js
+      - ./package.json:/home/node/package.json
