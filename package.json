@@ -7,14 +7,14 @@
     "url": "https://github.com/DEFRA/mine-support-api-gateway.git"
   },
   "homepage": "https://github.com/DEFRA/mine-support-api-gateway",
-  "main": "index.js",
+  "main": "app/index.js",
   "scripts": {
     "pretest": "npm run test:lint",
     "test": "npm run test:unit",
     "test:lint": "standard",
     "test:unit": "jest",
-    "unit:watch": "jest --coverage=false --onlyChanged --watch",
-    "start:watch": "nodemon --inspect=0.0.0.0 --ext js,njk --legacy-watch index.js"
+    "test:unit-watch": "jest --coverage=false --onlyChanged --watch",
+    "start:watch": "nodemon --inspect=0.0.0.0 --ext js,njk --legacy-watch app"
   },
   "author": "Defra DDTS",
   "contributors": [
