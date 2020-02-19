@@ -2,17 +2,13 @@ version: '3.7'
 
 services:
   ffc-demo-api-gateway:
-    build: .
+    build:
+      context: .
+      target: production
     image: ffc-demo-api-gateway
-    command: npm run start:watch
     environment:
       FFC_DEMO_CLAIM_SERVICE: http://ffc-demo-claim-service:3003
       FFC_DEMO_USER_SERVICE: http://ffc-demo-user-service:3002
-      NODE_ENV: development
-    volumes:
-      - ./server/:/usr/src/app/server/
-      - ./index.js:/usr/src/app/index.js
-      - ./package.json:/usr/src/app/package.json
 
 volumes:
   node_modules:

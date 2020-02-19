@@ -6,6 +6,8 @@ Digital service mock to claim public money in the event property subsides into m
 
 ## Prerequisites
 
+AWS credentials with access to the container registry where FFC parent images are stored.
+
 Either:
 - Docker
 - Docker Compose
@@ -31,17 +33,15 @@ The following environment variables are required by the application container. V
 
 ## How to run tests
 
-A convenience script is provided to run automated tests in a containerised environment. The first time this is run, container images required for testing will be automatically built. An optional `--build` (or `-b`) flag may be used to rebuild these images in future (for example, to apply dependency updates).
+A convenience script is provided to run automated tests in a containerised environment. This will rebuild images before running tests via docker-compose, using a combination of `docker-compose.yaml` and `docker-compose.test.yaml`. The command given to `docker-compose run` may be customised by passing arguments to the test script.
 
 ```
-# Run tests
+# Run all tests
 scripts/test
 
-# Rebuild images and run tests
-scripts/test --build
+# Run only unit tests
+scripts/test --build	scripts/test npm run test:unit
 ```
-
-This runs tests via a `docker-compose run` command. If tests complete successfully, all containers, networks and volumes are cleaned up before the script exits. If there is an error or any tests fail, the associated Docker resources will be left available for inspection.
 
 Alternatively, the same tests may be run locally via npm:
 
@@ -49,6 +49,25 @@ Alternatively, the same tests may be run locally via npm:
 # Run tests without Docker
 npm run test
 ```
+
+### Test watcher
+
+A more convenient way to run tests in development is to use a file watcher to automatically run tests each time associated files are modified. For this purpose, the default docker-compose configuration mounts all app, test and git files into the main `app` container, enabling the test watcher to be run as shown below. The same approach may be used to execute arbitrary commands in the running app.
+
+```
+# Run unit test file watcher
+docker-compose exec app npm run test:unit-watch
+
+# Run all tests
+docker-compose exec app npm test
+
+# Open an interactive shell in the app container
+docker-compose exec app sh
+```
+
+### Why docker-compose.test.yaml exists
+
+Given that tests can be run in the main app container during development, it may not be obvious why `docker-compose.test.yaml` exists. It's main purpose is for CI pipelines, where tests need to run in a container without any ports forwarded from the host machine.
 
 ## Running the application
 
@@ -63,13 +82,16 @@ Container images are built using Docker Compose, with the same images used to ru
 By default, the start script will build (or rebuild) images so there will rarely be a need to build images manually. However, this can be achieved through the Docker Compose [build](https://docs.docker.com/compose/reference/build/) command:
 
 ```
+# Authenticate with FFC container image registry (requires pre-configured AWS credentials on your machine)
+aws ecr get-login --no-include-email | sh
+
 # Build container images
 docker-compose build
 ```
 
 ### Start and stop the service
 
-Use Docker Compose to run service locally. 
+Use Docker Compose to run service locally.
 
 `docker-compose up`
 
@@ -147,22 +169,18 @@ Liveness: `/healthz`
 
 ## Dependency management
 
-Dependencies should be managed within a container using the development image for the app. This will ensure that any packages with environment-specific variants are installed with the correct variant for the contained environment, rather than the host system which may differ between development and production.
+Dependencies should be managed within a container using the development image for the app. This will ensure that any packages with environment-specific variants are installed with the correct variant for the contained environment, rather than for the host system which may differ between development and production.
 
-The [`exec`](./scripts/exec) script is provided to run arbitrary commands, such as npm, in a running service container. If the service is not running when this script is called, it will be started for the duration of the command and then removed.
+Since dependencies are built into the container image, a full build should always be run immediately after any dependency change.
 
-Since dependencies are installed into the container image, a full build should always be run immediately after any dependency change.
-
-In development, the `node_modules` folder is mounted to a named volume. This volume must be removed in order for dependency changes to propagate from the rebuilt image into future instances of the app container. The [`start`](./scripts/start) script has a `--clean` (or `-c`) option  which will achieve this.
-
-The following example will update all npm dependencies, rebuild the container image and replace running containers and volumes:
+The following example will update dependencies via NPM, rebuild the container image and replace running containers and volumes:
 
 ```
-# Run the NPM update
-scripts/exec npm update
+# Run NPM update in a new container
+docker-compose run --rm --no-deps app npm update
 
 # Rebuild and restart the service
-scripts/start --clean
+docker-compose up --build --force-recreate
 ```
 
 ## Build Pipeline
