@@ -1,11 +1,10 @@
-@Library('defra-library@customise-output-mount-path')
+@Library('defra-library@generic-docker-compose-build')
 import uk.gov.defra.ffc.DefraUtils
 def defraUtils = new DefraUtils()
 
 def containerSrcFolder = '\\/home\\/node'
 def containerTag = ''
 def deployJobName = 'ffc-demo-api-gateway-deploy'
-def dockerTestService = 'ffc-demo-api-gateway'
 def kubeCredsId = 'FFCLDNEKSAWSS001_KUBECONFIG'
 def lcovFile = './test-output/lcov.info'
 def localSrcFolder = '.'
@@ -16,6 +15,7 @@ def regCredsId = 'ecr:eu-west-2:ecr-user'
 def registry = '562955126301.dkr.ecr.eu-west-2.amazonaws.com'
 def sonarQubeEnv = 'SonarQube'
 def sonarScanner = 'SonarScanner'
+def testService = 'ffc-demo-api-gateway'
 def timeoutInMinutes = 5
 
 def getExtraCommands(pr) {
@@ -43,10 +43,10 @@ node {
       defraUtils.lintHelm(repoName)
     }
     stage('Build test image') {
-      defraUtils.buildTestImage(repoName, dockerTestService, BUILD_NUMBER)
+      defraUtils.buildTestImage(repoName, BUILD_NUMBER)
     }
     stage('Run tests') {
-      defraUtils.runTests(repoName, dockerTestService, BUILD_NUMBER)
+      defraUtils.runTests(repoName, testService, BUILD_NUMBER)
     }
     stage('Create Test Report JUnit'){
       defraUtils.createTestReportJUnit()
