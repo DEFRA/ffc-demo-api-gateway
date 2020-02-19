@@ -1,4 +1,4 @@
-@Library('defra-library@generic-docker-compose-build')
+@Library('defra-library@1.0.0')
 import uk.gov.defra.ffc.DefraUtils
 def defraUtils = new DefraUtils()
 
