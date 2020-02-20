@@ -1,15 +1,26 @@
 version: '3.7'
 
 # This override file should be used in development environments to
-# connect this service to sibling services from other repositories
+# connect this service to sibling services from other repositories.
+# Dependencies shared with other projects should be started separately.
 
 services:
   ffc-demo-api-gateway:
+    build:
+      target: development
+    image: ffc-demo-api-gateway-development
     networks:
       - default
       - ffc-demo
     ports:
       - "3001:3001"
+    volumes:
+      - ./.git/:/home/node/.git/
+      - ./app/:/home/node/app/
+      - ./test/:/home/node/test/
+      - ./test-output/:/home/node/test-output/
+      - ./jest.config.js:/home/node/jest.config.js
+      - ./package.json:/home/node/package.json
 
 networks:
   ffc-demo:

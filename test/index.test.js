@@ -3,8 +3,8 @@ describe('Web test', () => {
   let server
 
   beforeAll(async () => {
-    jest.mock('../server/services/rest-client')
-    createServer = require('../server')
+    jest.mock('../app/services/rest-client')
+    createServer = require('../app/server')
   })
 
   beforeEach(async () => {
@@ -25,7 +25,7 @@ describe('Web test', () => {
   })
 
   test('POST /claim route fails with invalid content', async () => {
-    const restClient = require('../server/services/rest-client')
+    const restClient = require('../app/services/rest-client')
     const options = {
       method: 'POST',
       url: '/claim',
@@ -38,7 +38,7 @@ describe('Web test', () => {
   })
 
   test('POST /claim route works with valid content', async () => {
-    const restClient = require('../server/services/rest-client')
+    const restClient = require('../app/services/rest-client')
     const options = {
       method: 'POST',
       url: '/claim',
@@ -62,6 +62,6 @@ describe('Web test', () => {
   })
 
   afterAll(async () => {
-    jest.unmock('../server/services/rest-client')
+    jest.unmock('../app/services/rest-client')
   })
 })
