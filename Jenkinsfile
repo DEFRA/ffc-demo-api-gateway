@@ -104,10 +104,6 @@ node {
     defraUtils.notifySlackBuildFailure(e.message, "#generalbuildfailures")
     throw error
   } finally {
-<<<<<<< HEAD
-    defraUtils.deleteTestOutput(repoName)
-=======
     defraUtils.deleteTestOutput(repoName, containerSrcFolder)
->>>>>>> master
   }
 }
