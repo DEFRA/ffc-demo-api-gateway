@@ -43,10 +43,7 @@ node {
       defraUtils.lintHelm(repoName)
     }
     stage('Build test images') {
-      docker.withRegistry("https://$registry", regCredsId) {
-        sh 'aws ecr describe-repositories'
-        // defraUtils.buildTestImage(repoName, BUILD_NUMBER)
-      }
+      defraUtils.buildTestImage(repoName, BUILD_NUMBER)
     }
     stage('Run tests') {
       defraUtils.runTests(repoName, testService, BUILD_NUMBER)
