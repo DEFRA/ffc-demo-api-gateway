@@ -45,7 +45,7 @@ node {
     stage('Build test image') {
       docker.withRegistry("https://$registry", regCredsId) {
         sh 'aws ecr describe-repositories'
-        defraUtils.buildTestImage(repoName, BUILD_NUMBER)
+        // defraUtils.buildTestImage(repoName, BUILD_NUMBER)
       }
     }
     stage('Run tests') {
