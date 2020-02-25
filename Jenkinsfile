@@ -47,7 +47,7 @@ node {
       defraUtils.lintHelm(repoName)
     }
     stage('Build test images') {
-      defraUtils.buildTestImage(regCredsId, registry, repoName, BUILD_NUMBER, getContainerArgs())
+      defraUtils.buildTestImage(regCredsId, registry, repoName, BUILD_NUMBER)
     }
     stage('Run tests') {
       defraUtils.runTests(repoName, testService, BUILD_NUMBER)
