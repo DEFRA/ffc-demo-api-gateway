@@ -6,7 +6,7 @@ services:
       context: .
       target: production
       args:
-        REGISTRY: ${DOCKER_REGISTRY:562955126301.dkr.ecr.eu-west-2.amazonaws.com}
+        REGISTRY: ${DOCKER_REGISTRY:-562955126301.dkr.ecr.eu-west-2.amazonaws.com}
     image: ffc-demo-api-gateway
     environment:
       FFC_DEMO_CLAIM_SERVICE: http://ffc-demo-claim-service:3003
