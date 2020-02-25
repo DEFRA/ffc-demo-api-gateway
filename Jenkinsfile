@@ -68,7 +68,7 @@ node {
         defraUtils.verifyPackageJsonVersionIncremented()
       }
       stage('Helm install') {
-        defraUtils.deployChart(kubeCredsId, registry, repoName, containerTag, getExtraCommands(pr))
+        defraUtils.deployChart(KUBE_CREDENTIALS_ID, DOCKER_REGISTRY, repoName, containerTag, getExtraCommands(pr))
       }
     }
     if (pr == '') {
@@ -77,17 +77,16 @@ node {
       }
       stage('Trigger GitHub release') {
         withCredentials([
-          string(credentialsId: 'github_ffc_platform_repo', variable: 'gitToken')
+          string(credentialsId: 'github-auth-token', variable: 'gitToken')
         ]) {
           defraUtils.triggerRelease(containerTag, repoName, containerTag, gitToken)
         }
       }
       stage('Trigger Deployment') {
         withCredentials([
-          string(credentialsId: 'JenkinsDeployUrl', variable: 'jenkinsDeployUrl'),
-          string(credentialsId: 'ffc-demo-api-gateway-deploy-token', variable: 'jenkinsToken')
+          string(credentialsId: 'api-gateway-deploy-token', variable: 'jenkinsToken')
         ]) {
-          defraUtils.triggerDeploy(jenkinsDeployUrl, deployJobName, jenkinsToken, ['chartVersion': containerTag])
+          defraUtils.triggerDeploy(JENKINS_DEPLOY_SITE_ROOT, deployJobName, jenkinsToken, ['chartVersion': containerTag])
         }
       }
     }
