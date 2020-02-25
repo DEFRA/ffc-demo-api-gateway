@@ -1,4 +1,4 @@
-@Library('defra-library@1.0.0')
+@Library('defra-library@psd-539-accomodate-non-prod')
 import uk.gov.defra.ffc.DefraUtils
 def defraUtils = new DefraUtils()
 
@@ -29,6 +29,10 @@ def getExtraCommands(pr) {
   ].join(' ')
 }
 
+def getContainerArgs(){
+  return '--build-arg REGISTRY=171014905211.dkr.ecr.eu-west-2.amazonaws.com'
+}
+
 node {
   checkout scm
 
@@ -43,9 +47,7 @@ node {
       defraUtils.lintHelm(repoName)
     }
     stage('Build test images') {
-      docker.withRegistry("https://$registry", regCredsId) {
-        defraUtils.buildTestImage(repoName, BUILD_NUMBER)
-      }
+      defraUtils.buildTestImage(regCredsId, registry, repoName, BUILD_NUMBER, getContainerArgs())
     }
     stage('Run tests') {
       defraUtils.runTests(repoName, testService, BUILD_NUMBER)
@@ -63,7 +65,7 @@ node {
       defraUtils.waitForQualityGateResult(timeoutInMinutes)
     }
     stage('Push container image') {
-      defraUtils.buildAndPushContainerImage(regCredsId, registry, repoName, containerTag)
+      defraUtils.buildAndPushContainerImage(regCredsId, registry, repoName, containerTag, getContainerArgs())
     }
     if (pr != '') {
       stage('Verify version incremented') {
