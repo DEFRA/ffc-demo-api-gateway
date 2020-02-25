@@ -1,4 +1,4 @@
-@Library('defra-library@1.0.0')
+@Library('defra-library@psd-539-test-library-changes')
 import uk.gov.defra.ffc.DefraUtils
 def defraUtils = new DefraUtils()
 
