@@ -29,8 +29,8 @@ def getExtraCommands(pr) {
   ].join(' ')
 }
 
-def getContainerArgs(){
-  return '--build-arg REGISTRY=171014905211.dkr.ecr.eu-west-2.amazonaws.com'
+def getContainerBuildArgs(){
+  return ['--build-arg' : 'REGISTRY=171014905211.dkr.ecr.eu-west-2.amazonaws.com']
 }
 
 node {
@@ -47,7 +47,7 @@ node {
       defraUtils.lintHelm(repoName)
     }
     stage('Build test image') {
-      defraUtils.buildTestImage(regCredsId, registry, repoName, BUILD_NUMBER)
+      defraUtils.buildTestImage(regCredsId, registry, repoName, BUILD_NUMBER, [])
     }
     stage('Run tests') {
       defraUtils.runTests(repoName, testService, BUILD_NUMBER)
@@ -65,7 +65,7 @@ node {
       defraUtils.waitForQualityGateResult(timeoutInMinutes)
     }
     stage('Push container image') {
-      defraUtils.buildAndPushContainerImage(regCredsId, registry, repoName, containerTag, getContainerArgs())
+      defraUtils.buildAndPushContainerImage(regCredsId, registry, repoName, containerTag, getContainerBuildArgs())
     }
     if (pr != '') {
       stage('Verify version incremented') {
