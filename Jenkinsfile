@@ -37,14 +37,6 @@ node {
     stage('Helm lint') {
       defraUtils.lintHelm(serviceName)
     }
-    stage('Trigger Deployment') {
-      withCredentials([
-        string(credentialsId: 'api-gateway-deploy-token', variable: 'jenkinsToken'),
-        string(credentialsId: 'api-gateway-job-deploy-name', variable: 'deployJobName')
-      ]) {
-        defraUtils.triggerDeploy(JENKINS_DEPLOY_SITE_ROOT, deployJobName, jenkinsToken, ['chartVersion': '1.0.5'])
-      }
-    }
     stage('Build test image') {
       defraUtils.buildTestImage(DOCKER_REGISTRY_CREDENTIALS_ID, DOCKER_REGISTRY, serviceName, BUILD_NUMBER)
     }
