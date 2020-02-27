@@ -1,5 +1,6 @@
 environment: production
 name: ffc-demo-api-gateway
+namespace: ffc-demo
 imagePullSecret: myregistrykey
 container:
   imagePullPolicy: Always
