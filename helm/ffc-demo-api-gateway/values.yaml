@@ -1,5 +1,6 @@
 environment: development
 name: ffc-demo-api-gateway
+namespace: ffc-demo
 image: ffc-demo-api-gateway
 restClientTimeoutMillis: 10000
 imagePullSecret:
