@@ -1,4 +1,4 @@
-@Library('defra-library@feature/PSD-528-update-helm-upgrade')
+@Library('defra-library@3.0.0')
 import uk.gov.defra.ffc.DefraUtils
 def defraUtils = new DefraUtils()
 
