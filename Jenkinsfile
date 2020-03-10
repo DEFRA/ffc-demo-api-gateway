@@ -19,7 +19,8 @@ def timeoutInMinutes = 5
 
 def getExtraCommands(pr) {
   def helmValues = [
-    /container.redeployOnChange="$pr-$BUILD_NUMBER"/
+    /container.redeployOnChange="$pr-$BUILD_NUMBER"/,
+    /labels.version="$containerTag"/
   ].join(',')
 
   return [

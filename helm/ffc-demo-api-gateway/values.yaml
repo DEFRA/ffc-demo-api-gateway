@@ -3,6 +3,11 @@ name: ffc-demo-api-gateway
 image: ffc-demo-api-gateway
 restClientTimeoutMillis: 10000
 imagePullSecret:
+labels:
+  instance:
+  version: 1.0.0
+  component: service
+  managedBy: helm
 service:
   type: ClusterIP
   port: 80
