@@ -1,5 +1,6 @@
 environment: development
 name: ffc-demo-api-gateway
+namespace: ffc-demo
 image: ffc-demo-api-gateway
 restClientTimeoutMillis: 10000
 imagePullSecret:
@@ -11,6 +12,7 @@ service:
   type: ClusterIP
   port: 80
 container:
+  priorityClassName: low
   imagePullPolicy: IfNotPresent
   redeployOnChange: update this field to force a change
   requestMemory: 30Mi

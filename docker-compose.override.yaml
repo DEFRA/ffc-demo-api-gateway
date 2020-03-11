@@ -1,6 +1,20 @@
 version: '3.7'
 
+# This override file should be used when running this service in isolation
+# to provide dependencies and expose ports for local testing
+
 services:
   ffc-demo-api-gateway:
+    build:
+      target: development
+    image: ffc-demo-api-gateway-development
     ports:
       - "3001:3001"
+      - "9229:9229"
+    volumes:
+      - ./.git/:/home/node/.git/
+      - ./app/:/home/node/app/
+      - ./test/:/home/node/test/
+      - ./test-output/:/home/node/test-output/
+      - ./jest.config.js:/home/node/jest.config.js
+      - ./package.json:/home/node/package.json

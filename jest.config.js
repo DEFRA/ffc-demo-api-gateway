@@ -15,7 +15,7 @@ module.exports = {
     '<rootDir>/test-output/',
     '<rootDir>/test/',
     '.*/__mocks__/.*',
-    '<rootDir>/server/migrations/',
+    '<rootDir>/app/migrations/',
     '<rootDir>/jest.config.js'
   ],
   coverageThreshold: {

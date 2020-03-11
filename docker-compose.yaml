@@ -2,16 +2,15 @@ version: '3.7'
 
 services:
   ffc-demo-api-gateway:
-    build: .
+    build:
+      context: .
+      target: production
+      args:
+        REGISTRY: ${DOCKER_REGISTRY:-562955126301.dkr.ecr.eu-west-2.amazonaws.com}
     image: ffc-demo-api-gateway
-    command: npm run start:watch
     environment:
       FFC_DEMO_CLAIM_SERVICE: http://ffc-demo-claim-service:3003
       FFC_DEMO_USER_SERVICE: http://ffc-demo-user-service:3002
-      NODE_ENV: development
-    volumes:
-      - node_modules:/usr/src/app/node_modules
-      - .:/usr/src/app
 
 volumes:
   node_modules:
