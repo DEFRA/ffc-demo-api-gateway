@@ -13,6 +13,19 @@ def sonarQubeEnv = 'SonarQube'
 def sonarScanner = 'SonarScanner'
 def timeoutInMinutes = 5
 
+def getExtraCommands(pr, containerTag) {
+  def helmValues = [
+    /container.redeployOnChange="$pr-$BUILD_NUMBER"/,
+    /labels.version="$containerTag"/
+    
+  ].join(',')
+
+  return [
+    "--values ./helm/ffc-demo-api-gateway/jenkins-aws.yaml",
+    "--set $helmValues"
+  ].join(' ')
+}
+
 node {
   checkout scm
 
@@ -52,17 +65,7 @@ node {
         defraUtils.verifyPackageJsonVersionIncremented()
       }
       stage('Helm install') {
-        def helmValues = [
-          /container.redeployOnChange="$pr-$BUILD_NUMBER"/,
-          /labels.version="$containerTag"/
-        ].join(',')
-
-        def extraCommands = [
-          "--values ./helm/ffc-demo-api-gateway/jenkins-aws.yaml",
-          "--set $helmValues"
-        ].join(' ')
-
-        defraUtils.deployChart(KUBE_CREDENTIALS_ID, DOCKER_REGISTRY, serviceName, containerTag, extraCommands)
+        defraUtils.deployChart(KUBE_CREDENTIALS_ID, DOCKER_REGISTRY, serviceName, containerTag, getExtraCommands(pr, containerTag))
       }
     }
     if (pr == '') {
