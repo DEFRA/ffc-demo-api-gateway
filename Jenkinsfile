@@ -62,7 +62,7 @@ node {
           "--set $helmValues"
         ].join(' ')
 
-        defraUtils.deployChart(KUBE_CREDENTIALS_ID, DOCKER_REGISTRY, serviceName, containerTag, getExtraCommands(pr))
+        defraUtils.deployChart(KUBE_CREDENTIALS_ID, DOCKER_REGISTRY, serviceName, containerTag, extraCommands)
       }
     }
     if (pr == '') {
