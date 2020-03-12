@@ -58,7 +58,7 @@ node {
         ].join(',')
 
         def extraCommands = [
-          "--values ./helm/ffc-demo-claim-service/jenkins-aws.yaml",
+          "--values ./helm/ffc-demo-api-service/jenkins-aws.yaml",
           "--set $helmValues"
         ].join(' ')
 
