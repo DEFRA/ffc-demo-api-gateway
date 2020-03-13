@@ -13,9 +13,11 @@ def sonarQubeEnv = 'SonarQube'
 def sonarScanner = 'SonarScanner'
 def timeoutInMinutes = 5
 
-def getExtraCommands(pr) {
+def getExtraCommands(pr, containerTag) {
   def helmValues = [
-    /container.redeployOnChange="$pr-$BUILD_NUMBER"/
+    /container.redeployOnChange="$pr-$BUILD_NUMBER"/,
+    /labels.version="$containerTag"/
+    
   ].join(',')
 
   return [
@@ -63,7 +65,7 @@ node {
         defraUtils.verifyPackageJsonVersionIncremented()
       }
       stage('Helm install') {
-        defraUtils.deployChart(KUBE_CREDENTIALS_ID, DOCKER_REGISTRY, serviceName, containerTag, getExtraCommands(pr))
+        defraUtils.deployChart(KUBE_CREDENTIALS_ID, DOCKER_REGISTRY, serviceName, containerTag, getExtraCommands(pr, containerTag))
       }
     }
     if (pr == '') {
@@ -97,7 +99,7 @@ node {
   } catch(e) {
     defraUtils.setGithubStatusFailure(e.message)
     defraUtils.notifySlackBuildFailure(e.message, "#generalbuildfailures")
-    throw error
+    throw e
   } finally {
     defraUtils.deleteTestOutput(serviceName, containerSrcFolder)
   }
