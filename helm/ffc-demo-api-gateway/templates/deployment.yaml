@@ -2,6 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: {{ quote .Values.name }}
+  namespace: {{ quote .Values.namespace }}
   labels: {{ include "ffc-demo.labels" . | trimSuffix "\n" | indent 2 }}
 spec:
   priorityClassName: {{ quote .Values.container.priorityClassName }}
