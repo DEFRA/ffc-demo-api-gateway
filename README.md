@@ -31,6 +31,18 @@ The following environment variables are required by the application container. V
 | FFC_DEMO_CLAIM_SERVICE     | Url of service Claim service   | no       | http://localhost:3003 |                             |       |
 | FFC_DEMO_REST_CLIENT_TIMEOUT_IN_MILLIS | Rest client timout | no       | 5000                  |                             |       |
 
+## Building the project locally
+
+To build the project locally the Docker client must be authenticated against the private Defra container registry to retrieve the parent image.
+An ECR registry provides exact commands for authenticating the Docker client.
+These can be found by selecting a repository and clicking the `View push commands` button.
+
+The environment variable `DOCKER_REGISTRY` must be set to the registry holding the Defra parent image,
+i.e.
+```
+export DOCKER_REGISTRY=registryid.myprivatedockersite.com
+```
+
 ## How to run tests
 
 A convenience script is provided to run automated tests in a containerised environment. This will rebuild images before running tests via docker-compose, using a combination of `docker-compose.yaml` and `docker-compose.test.yaml`. The command given to `docker-compose run` may be customised by passing arguments to the test script.
