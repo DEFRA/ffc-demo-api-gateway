@@ -25,10 +25,10 @@
   ],
   "license": "OGL-UK-3.0",
   "dependencies": {
-    "@hapi/hapi": "^18.4.1",
-    "@hapi/hoek": "^8.2.5",
-    "@hapi/joi": "^16.1.4",
-    "@hapi/wreck": "^15.1.0"
+    "@hapi/hapi": "^19.1.1",
+    "@hapi/hoek": "^9.0.4",
+    "@hapi/joi": "^17.1.1",
+    "@hapi/wreck": "^17.0.0"
   },
   "devDependencies": {
     "@hapi/good": "^9.0.0",
