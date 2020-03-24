@@ -1,4 +1,4 @@
-@Library('defra-library@3.0.1')
+@Library('defra-library@4')
 import uk.gov.defra.ffc.DefraUtils
 def defraUtils = new DefraUtils()
 
@@ -17,7 +17,7 @@ def getExtraCommands(pr, containerTag) {
   def helmValues = [
     /container.redeployOnChange="$pr-$BUILD_NUMBER"/,
     /labels.version="$containerTag"/
-    
+
   ].join(',')
 
   return [
