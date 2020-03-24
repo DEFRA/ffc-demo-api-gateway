@@ -1,4 +1,4 @@
-[![Known Vulnerabilities](https://snyk.io//test/github/DEFRA/ffc-demo-api-gateway/badge.svg?targetFile=package.json)](https://snyk.io//test/github/DEFRA/ffc-demo-api-gateway?targetFile=package.json)
+[![Known Vulnerabilities](https://snyk.io/test/github/DEFRA/ffc-demo-api-gateway/badge.svg?targetFile=package.json)](https://snyk.io/test/github/DEFRA/ffc-demo-api-gateway?targetFile=package.json)
 
 # FFC Demo API Gateway
 
