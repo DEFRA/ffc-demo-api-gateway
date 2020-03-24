@@ -31,13 +31,13 @@
     "@hapi/wreck": "^15.1.0"
   },
   "devDependencies": {
-    "@hapi/good": "^8.2.4",
-    "@hapi/good-console": "^8.1.2",
-    "@hapi/good-squeeze": "^5.2.1",
+    "@hapi/good": "^9.0.0",
+    "@hapi/good-console": "^9.0.0",
+    "@hapi/good-squeeze": "^6.0.0",
     "blipp": "^4.0.1",
-    "jest": "^24.9.0",
-    "jest-junit": "^8.0.0",
-    "nodemon": "^1.19.4",
+    "jest": "^25.1.0",
+    "jest-junit": "^10.0.0",
+    "nodemon": "^2.0.2",
     "standard": "^14.3.3"
   },
   "nodemonConfig": {
