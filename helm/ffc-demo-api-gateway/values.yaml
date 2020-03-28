@@ -9,10 +9,6 @@ labels:
   version: 1.0.0
   component: service
 
-service:
-  port: 80
-  type: ClusterIP
-
 deployment:
   restartPolicy: Always
   priorityClassName: low
