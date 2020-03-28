@@ -65,3 +65,5 @@ test-output/
 
 # VSCode project files
 .vscode/
+
+helm/**/*.lock
