@@ -1,7 +1,7 @@
 {
   "name": "ffc-demo-api-gateway",
   "description": "Digital service demonstration application to claim public money in the event property subsides into mine shaft.",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "repository": {
     "type": "git",
     "url": "https://github.com/DEFRA/mine-support-api-gateway.git"
