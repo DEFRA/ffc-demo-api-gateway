@@ -10,7 +10,7 @@ env:
 - name: FFC_DEMO_CLAIM_SERVICE
   value: {{ quote .Values.container.claimServiceUrl }}
 - name: PORT
-  value: {{ .Values.container.port }}
+  value: {{ quote .Values.container.port }}
 livenessProbe:
   httpGet:
     path: {{ quote .Values.livenessProbe.path }}
