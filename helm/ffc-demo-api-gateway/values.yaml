@@ -32,9 +32,7 @@ livenessProbe:
 
 container:
   imagePullPolicy: IfNotPresent
-  priorityClassName: low
   port: 3001
-  redeployOnChange: update this field to force a change
   requestMemory: 30Mi
   requestCpu: 10m
   limitMemory: 60Mi
@@ -43,5 +41,4 @@ container:
   allowPrivilegeEscalation: false
   claimServiceUrl: http://ffc-demo-claim-service.default
   userServiceUrl: http://ffc-demo-user-service.default
-  restartPolicy: Always
   restClientTimeoutMillis: 10000
