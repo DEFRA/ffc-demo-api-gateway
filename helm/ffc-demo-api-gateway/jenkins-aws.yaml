@@ -1,8 +1,0 @@
-environment: production
-name: ffc-demo-api-gateway
-namespace: ffc-demo
-imagePullSecret: myregistrykey
-container:
-  imagePullPolicy: Always
-  claimServiceUrl: http://ffc-demo-claim-service.ffc-demo
-  userServiceUrl: http://ffc-demo-user-service.ffc-demo
