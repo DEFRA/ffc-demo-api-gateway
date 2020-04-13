@@ -1,3 +1,3 @@
-@Library('defra-library@fix-helm-redeployOnChange-and-missed-db-update') _
+@Library('defra-library@4') _
 
 buildNodeJs environment: 'dev'
