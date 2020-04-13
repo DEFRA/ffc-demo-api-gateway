@@ -4,8 +4,7 @@ namespace: ffc-demo
 workstream: ffc-demo
 image: ffc-demo-api-gateway
 
-labels:
-  version: 1.0.0
+labels: {}
 
 deployment:
   restartPolicy: Always
