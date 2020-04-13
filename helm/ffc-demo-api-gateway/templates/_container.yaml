@@ -1,0 +1,20 @@
+{{- define "ffc-demo-api-gateway.container" -}}
+name: {{ quote .Values.name }}
+env:
+- name: environment
+  value: {{ quote .Values.environment }}
+- name: FFC_DEMO_REST_CLIENT_TIMEOUT_IN_MILLIS
+  value: {{ quote .Values.container.restClientTimeoutMillis }}
+- name: FFC_DEMO_USER_SERVICE
+  value: {{ quote .Values.container.userServiceUrl }}
+- name: FFC_DEMO_CLAIM_SERVICE
+  value: {{ quote .Values.container.claimServiceUrl }}
+- name: PORT
+  value: {{ quote .Values.container.port }}
+livenessProbe: {{ include "ffc-helm-library.http-get-probe" (list . .Values.livenessProbe) | nindent 4 }}
+readinessProbe: {{ include "ffc-helm-library.http-get-probe" (list . .Values.readinessProbe) | nindent 4 }}
+ports:
+- name: http
+  containerPort: {{ .Values.container.port }}
+  protocol: TCP
+{{- end -}}

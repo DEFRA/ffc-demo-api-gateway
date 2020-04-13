@@ -3,41 +3,42 @@ name: ffc-demo-api-gateway
 namespace: ffc-demo
 workstream: ffc-demo
 image: ffc-demo-api-gateway
-restClientTimeoutMillis: 10000
-imagePullSecret:
-labels:
-  instance:
-  version: 1.0.0
-  component: service
-service:
-  type: ClusterIP
-  port: 80
-container:
+
+labels: {}
+
+deployment:
+  restartPolicy: Always
   priorityClassName: low
-  imagePullPolicy: IfNotPresent
+  replicas: 1
+  minReadySeconds: 5
   redeployOnChange: update this field to force a change
-  requestMemory: 30Mi
-  requestCpu: 10m
-  limitMemory: 60Mi
-  limitCpu: 40m
+  imagePullSecret:
   runAsNonRoot: true
   runAsUser: 1000
-  readOnlyRootFilesystem: true
-  allowPrivilegeEscalation: false
-  claimServiceUrl: http://ffc-demo-claim-service.default
-  userServiceUrl: http://ffc-demo-user-service.default
-  restartPolicy: Always
-replicaCount: 1
-minReadySeconds: 5
+
 readinessProbe:
   path: /healthy
   port: 3001
   initialDelaySeconds: 20
   periodSeconds: 10
   failureThreshold: 3
+
 livenessProbe:
   path: /healthz
   port: 3001
   initialDelaySeconds: 20
   periodSeconds: 10
   failureThreshold: 3
+
+container:
+  imagePullPolicy: IfNotPresent
+  port: 3001
+  requestMemory: 30Mi
+  requestCpu: 10m
+  limitMemory: 60Mi
+  limitCpu: 40m
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+  claimServiceUrl: http://ffc-demo-claim-service.default
+  userServiceUrl: http://ffc-demo-user-service.default
+  restClientTimeoutMillis: 10000
