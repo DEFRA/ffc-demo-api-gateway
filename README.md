@@ -2,6 +2,8 @@
 
 # FFC Demo API Gateway
 
+N.B. This repo has now been archived as its functionality now exists in other services
+
 Digital service mock to claim public money in the event property subsides into mine shaft.  This service receives submitted applications from the web application and sends the user data to the user service and the claim data to the claim service via http.  A response is sent back to the web front end as confirmation.
 
 ## Prerequisites
